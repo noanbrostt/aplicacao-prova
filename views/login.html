@@ -1,0 +1,135 @@
+<style>
+  #conteudo {
+    background-color: #c9d6ff;
+    background-image: url(./assets/img/Fundo-Tinder.png);
+    background-position-x: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  #logo {
+    width: 145px;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+  }
+  #logo img {
+    width: 100%;
+  }
+  .container {
+    background-color: transparent;
+    backdrop-filter: blur(10px);
+    border-radius: 30px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
+    overflow: hidden;
+    width: 410px;
+    max-width: 98%;
+    min-height: 380px;
+    margin-inline: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  span {
+    font-size: 12px;
+  }
+  button {
+    color: var(--contrast-secondary);
+    border: 1px solid var(--contrast-secondary);
+    font-size: 12px;
+    padding: 10px 45px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-top: 15px;
+    cursor: pointer;
+  }
+  .form {
+    color: var(--contrast-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 100%;
+  }
+  input {
+    background-color: #eee;
+    border: none;
+    margin: 8px 0;
+    padding: 10px 15px;
+    font-size: 13px;
+    border-radius: 8px;
+    width: 100%;
+    outline: none;
+    width: 350px;
+  }
+  .inputGroup {
+    font-family: "Segoe UI", sans-serif;
+    margin: 1em 0 1em 0;
+    max-width: 190px;
+    position: relative;
+  }
+  .inputGroup input {
+    font-size: 100%;
+    padding: 0.8em;
+    outline: none;
+    border: 2px solid rgb(200, 200, 200);
+    background-color: transparent;
+    border-radius: 20px;
+    width: 100%;
+  }
+  .inputGroup label {
+    font-size: 100%;
+    position: absolute;
+    left: 0;
+    padding: 0.8em;
+    margin-left: 0.5em;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    color: rgb(100, 100, 100);
+  }
+  .inputGroup :is(input:focus, input:valid) ~ label {
+    transform: translateY(-50%) scale(0.9);
+    margin: 0em;
+    margin-left: 1.3em;
+    padding: 0.4em;
+    background-color: #e8e8e8;
+  }
+  .inputGroup :is(input:focus, input:valid) {
+    border-color: rgb(150, 150, 200);
+  }
+</style>
+
+<div id="logo"><img src="./assets/img/logo.png" alt="Logo" /></div>
+
+<div class="container">
+    <div class="form">
+      <h1>Entrar</h1>
+
+      <div class="inputGroup">
+        <input type="text" required="" autocomplete="off" id="matricula" />
+        <label for="matricula">Matricula Plansul</label>
+      </div>
+
+      <div class="inputGroup">
+        <input type="text" required="" autocomplete="off" id="cpf" />
+        <label for="cpf">Cpf</label>
+      </div>
+
+      <button class="btn btn-primary">Entrar</button>
+    </div>
+</div>
+
+<script>
+  // Input Masks
+  $("#matricula").mask("000000");
+  $("#cpf").mask("000.000.000-00");
+  //
+</script>
