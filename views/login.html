@@ -1,17 +1,4 @@
 <style>
-  #conteudo {
-    background-color: #c9d6ff;
-    background-image: url(./assets/img/Fundo-Tinder.png);
-    background-position-x: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-
-
-    background-repeat: no-repeat;
-    background-size: cover;
-  }
   #logo {
     width: 145px;
     position: absolute;
@@ -21,9 +8,19 @@
   #logo img {
     width: 100%;
   }
+  #conteudo {
+    background-image: url(./assets/img/bkg_login.png);
+    background-position-x: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
   .container {
     background-color: transparent;
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(15px);
     border-radius: 30px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
     overflow: hidden;
@@ -34,22 +31,20 @@
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-  span {
-    font-size: 12px;
+    color: var(--contrast-secondary);
   }
   button {
-    color: var(--contrast-secondary);
     border: 1px solid var(--contrast-secondary);
     font-size: 12px;
     padding: 10px 45px;
+    margin-top: 20px;
     border: 1px solid transparent;
     border-radius: 8px;
     font-weight: 600;
     letter-spacing: 0.5px;
     text-transform: uppercase;
-    margin-top: 15px;
     cursor: pointer;
+    width: 350px;
   }
   .form {
     color: var(--contrast-secondary);
@@ -71,39 +66,25 @@
     width: 350px;
   }
   .inputGroup {
-    font-family: "Segoe UI", sans-serif;
-    margin: 1em 0 1em 0;
-    max-width: 190px;
     position: relative;
   }
   .inputGroup input {
-    font-size: 100%;
-    padding: 0.8em;
     outline: none;
     border: 2px solid rgb(200, 200, 200);
     background-color: transparent;
-    border-radius: 20px;
-    width: 100%;
+    margin-top: 28px;
+    color: var(--contrast-secondary);
   }
   .inputGroup label {
-    font-size: 100%;
     position: absolute;
-    left: 0;
-    padding: 0.8em;
-    margin-left: 0.5em;
+    left: 14px;
+    top: 38px;
     pointer-events: none;
     transition: all 0.3s ease;
-    color: rgb(100, 100, 100);
   }
   .inputGroup :is(input:focus, input:valid) ~ label {
-    transform: translateY(-50%) scale(0.9);
-    margin: 0em;
-    margin-left: 1.3em;
-    padding: 0.4em;
-    background-color: #e8e8e8;
-  }
-  .inputGroup :is(input:focus, input:valid) {
-    border-color: rgb(150, 150, 200);
+    transform: translateY(-145%);
+    font-size: 14px;
   }
 </style>
 
@@ -111,19 +92,19 @@
 
 <div class="container">
     <div class="form">
-      <h1>Entrar</h1>
+      <h1>Provas PSI Plansul</h1>
 
       <div class="inputGroup">
         <input type="text" required="" autocomplete="off" id="matricula" />
-        <label for="matricula">Matricula Plansul</label>
+        <label for="matricula">Matrícula Plansul</label>
       </div>
 
       <div class="inputGroup">
         <input type="text" required="" autocomplete="off" id="cpf" />
-        <label for="cpf">Cpf</label>
+        <label for="cpf">CPF</label>
       </div>
 
-      <button class="btn btn-primary">Entrar</button>
+      <button class="btn btn-primary entrar">Entrar</button>
     </div>
 </div>
 
@@ -132,4 +113,8 @@
   $("#matricula").mask("000000");
   $("#cpf").mask("000.000.000-00");
   //
+
+  $('.entrar').on('click', function() {
+    $('#conteudo').load('./views/lista_provas.html');
+  });
 </script>
