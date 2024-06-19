@@ -91,21 +91,21 @@
 <div id="logo"><img src="./assets/img/logo.png" alt="Logo" /></div>
 
 <div class="container">
-    <div class="form">
-      <h1>Provas PSI Plansul</h1>
+  <div class="form">
+    <h1>Provas PSI Plansul</h1>
 
-      <div class="inputGroup">
-        <input type="text" required="" autocomplete="off" id="matricula" />
-        <label for="matricula">Matrícula Plansul</label>
-      </div>
-
-      <div class="inputGroup">
-        <input type="text" required="" autocomplete="off" id="cpf" />
-        <label for="cpf">CPF</label>
-      </div>
-
-      <button class="btn btn-primary entrar">Entrar</button>
+    <div class="inputGroup">
+      <input type="text" required="" autocomplete="off" id="matricula" />
+      <label for="matricula">Matrícula Plansul</label>
     </div>
+
+    <div class="inputGroup">
+      <input type="text" required="" autocomplete="off" id="cpf" />
+      <label for="cpf">CPF</label>
+    </div>
+
+    <button class="btn btn-primary entrar">Entrar</button>
+  </div>
 </div>
 
 <script>
@@ -114,7 +114,22 @@
   $("#cpf").mask("000.000.000-00");
   //
 
-  $('.entrar').on('click', function() {
-    $('#conteudo').load('./views/lista_provas.html');
+  $(".entrar").on("click", function () {
+
+    var matricula = $('#matricula').val().trim();
+    if (matricula.length < 6) {
+        triggerSweetAlertNotification('warning', 'Informe sua matrícula Plansul!');
+        return;
+    }
+    var cpf = $('#cpf').val().trim().replace(/\D/g, '');
+    if (cpf.length < 11) {
+        triggerSweetAlertNotification('warning', 'Informe seu CPF!');
+        return;
+    }
+
+    setCookie('matricula', matricula, 30);
+    setCookie('cpf', cpf, 30);
+
+    $("#conteudo").load("./views/lista_provas.html");
   });
 </script>
