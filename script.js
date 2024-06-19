@@ -1,11 +1,18 @@
 $(document).ready(function(){
-    $('#conteudo').load('./views/login.html');
-    // $('#conteudo').load('./views/lista_provas.html');
+
+    if (!cookieExists('matricula')) {
+        $('#conteudo').load('./views/login.html');
+    } else if (cookieExists('prova')) {
+        $('#conteudo').load('./views/prova.html');
+    } else {
+        $('#conteudo').load('./views/lista_provas.html');
+        // $('#conteudo').load('./views/prova.html');
+    }
 
     // dificultarInspecionarElemento();
 });
 
-
+// Chama uma notificação no canto superior direito que dura 2 segundos
 function triggerSweetAlertNotification(icon, title) {
     Swal.fire({
         toast: true,
@@ -19,7 +26,7 @@ function triggerSweetAlertNotification(icon, title) {
     });
 }
 
-
+// Função que impede uso do botão direito, F12, etc..
 function dificultarInspecionarElemento() {
     
     if (document.addEventListener) {
@@ -85,6 +92,22 @@ function getCookie(cookieName) {
         }
     }
     return '';
+}
+
+// Função para checkar se um cookie existe
+function cookieExists(cookieName) {
+    // Obter todos os cookies do documento e separá-los em um array
+    const cookies = document.cookie.split(';');
+
+    // Iterar sobre cada cookie para verificar se o cookieName está presente
+    for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim(); // Remover espaços em branco
+        // Verificar se o cookie começa com o nome do cookie procurado
+        if (cookie.startsWith(`${cookieName}=`)) {
+            return true; // Cookie encontrado
+        }
+    }
+    return false; // Cookie não encontrado
 }
 
 // Função para deletar um cookie

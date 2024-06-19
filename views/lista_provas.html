@@ -131,11 +131,14 @@
 <script>
   $(document).ready(function () {
     $("#topbar").load("./views/templates/topbar.html");
+    $(window).scrollTop(0);
   });
 
   $(".list-group-item-action").on("click", function () {
+    var prova = $(this).text();
+    
     Swal.fire({
-      title: "Quer começar a prova de " + $(this).text() + "?",
+      title: "Quer começar a prova de " + prova + "?",
       text: "Não será possível pausar a prova!",
       icon: "question",
       showCancelButton: true,
@@ -144,12 +147,10 @@
       confirmButtonText: "Sim, começar!",
       cancelButtonText: "Não",
     }).then((result) => {
+        
       if (result.isConfirmed) {
-        Swal.fire({
-          title: "Começou!",
-          text: "Your file has been deleted.",
-          icon: "success",
-        });
+        setCookie('prova', prova, 1);
+        $('#conteudo').load('./views/prova.html');
       }
     });
   });

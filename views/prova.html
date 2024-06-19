@@ -1,0 +1,162 @@
+<style>
+  main {
+    background-color: #02295421;
+    width: 96%;
+    margin: 2vh auto;
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+    gap: 30px;
+  }
+  main > h2 {
+    padding: 8px 12px;
+    position: sticky;
+    top: 68px;
+    background: #dee3e9;
+    width: calc(100% + 32px);
+  }
+  .questao {
+    display: flex;
+    flex-direction: column;
+    padding: 18px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
+    width: 96%;
+    transition: .3s;
+    background-color: #fff;
+  }
+  .questao:has(input[type="radio"]:checked) {
+    background-color: #42ff425c;
+  }
+  .questao input {
+    display: none;
+  }
+  .info {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .question {
+    color: var(--contrast-primary);
+    font-size: 18px;
+    line-height: 18px;
+    font-weight: 800;
+  }
+  .questao label {
+    display: flex;
+    padding: 14px;
+    margin: 8px 0 0 0;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 10px;
+    cursor: pointer;
+    border: 1px solid rgba(187, 187, 187, 0.164);
+    transition: 0.3s ease;
+  }
+  .questao label:hover {
+    background-color: rgba(24, 24, 24, 0.13);
+    border: 1px solid #bbb;
+  }
+  .questao input[type="radio"]:checked + label {
+    border-color: var(--bg-blue);
+    color: var(--bg-blue);
+  }
+</style>
+
+<header id="topbar">
+  <!-- "./views/templates/topbar.html" -->
+</header>
+
+<main>
+  <h2>SAC_COMERCIAL</h2>
+
+  <div class="questao">
+    <div class="info">
+      <span class="question">1. What does CSS stand for?</span>
+    </div>
+    <input type="radio" id="1-a" name="1" value="a" />
+    <label for="1-a">a) Computer Style Sheets</label>
+    <input type="radio" id="1-b" name="1" value="b" />
+    <label for="1-b">b) Cascading Style Sheets</label>
+    <input type="radio" id="1-c" name="1" value="c" />
+    <label for="1-c">c) Creative Style Sheets</label>
+  </div>
+
+  <div class="questao">
+    <div class="info">
+      <span class="question">2. What does CSS stand for?</span>
+    </div>
+    <input type="radio" id="2-a" name="2" value="a" />
+    <label for="2-a">a) Computer Style Sheets</label>
+    <input type="radio" id="2-b" name="2" value="b" />
+    <label for="2-b">b) Cascading Style Sheets</label>
+    <input type="radio" id="2-c" name="2" value="c" />
+    <label for="2-c">c) Creative Style Sheets</label>
+  </div>
+
+  <div class="questao">
+    <div class="info">
+      <span class="question">3. What does CSS stand for?</span>
+    </div>
+    <input type="radio" id="3-a" name="3" value="a" />
+    <label for="3-a">a) Computer Style Sheets</label>
+    <input type="radio" id="3-b" name="3" value="b" />
+    <label for="3-b">b) Cascading Style Sheets</label>
+    <input type="radio" id="3-c" name="3" value="c" />
+    <label for="3-c">c) Creative Style Sheets</label>
+  </div>
+
+  <div class="questao">
+    <div class="info">
+      <span class="question">4. What does CSS stand for?</span>
+    </div>
+    <input type="radio" id="4-a" name="4" value="a" />
+    <label for="4-a">a) Computer Style Sheets</label>
+    <input type="radio" id="4-b" name="4" value="b" />
+    <label for="4-b">b) Cascading Style Sheets</label>
+    <input type="radio" id="4-c" name="4" value="c" />
+    <label for="4-c">c) Creative Style Sheets</label>
+  </div>
+
+  <button type="button" class="btn btn-success" id="entregarProva">Terminar prova</button>
+</main>
+
+<script>
+  $(document).ready(function () {
+    $("#topbar").load("./views/templates/topbar.html");
+
+    const matricula = getCookie('prova'); // Obtém o valor do cookie
+    $('main > h2').html('Prova de '+matricula);
+  });
+
+  $('#entregarProva').on('click', function() {
+    if ($('.questao:not(:has(input[type="radio"]:checked))').length > 0) {
+        triggerSweetAlertNotification('warning', 'Responda todas as perguntas!');
+        return;
+    }
+
+
+    Swal.fire({
+      title: "Quer entregar a prova?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sim, entregar!",
+      cancelButtonText: "Não",
+    }).then((result) => {
+        
+      if (result.isConfirmed) {
+        deleteCookie('prova');
+        triggerSweetAlertNotification('success', 'Prova entregue!');
+        $('#conteudo').load('./views/lista_provas.html');
+      }
+    });
+
+  });
+</script>

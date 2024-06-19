@@ -45,6 +45,8 @@ input, textarea {
 #conteudo {
   width: 100%;
   height: 100vh;
+  margin-top: 68px; /* Tamanho do topbar */
+  padding-block: 8px;
 }
 .btn-primary {
   background: var(--bg-blue);
