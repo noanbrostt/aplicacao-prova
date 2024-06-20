@@ -71,30 +71,14 @@
         aria-controls="collapseOne"
       >
         <h5 class="mb-0">Provas Pendentes</h5>
-        <span>7</span>
+        <span id="countPendente">0</span>
       </div>
       <div id="collapseOne" class="collapse show" aria-labelledby="headingOne">
         <div class="card-body">
           <div class="list-group">
-            <span class="list-group-item list-group-item-action"
-              >CID_BOLSAS E CID_PROGRAMAS_SOCIAIS</span
-            >
-            <span class="list-group-item list-group-item-action">CID_FGTS</span>
-            <span class="list-group-item list-group-item-action"
-              >COM_RENEGOCIACAO</span
-            >
-            <span class="list-group-item list-group-item-action"
-              >CXA_GERAL</span
-            >
-            <span class="list-group-item list-group-item-action"
-              >HABITACAO_CLIENTES, SAC_HABITACAO OU CONTRATO_HABITACAO</span
-            >
-            <span class="list-group-item list-group-item-action"
-              >RETAGUARDA</span
-            >
-            <span class="list-group-item list-group-item-action"
-              >SAC_ COMERCIAL E COM_COMERCIAL_CLIENTES</span
-            >
+            
+          <!-- Aqui serão impressas as provas ainda a fazer -->
+
           </div>
         </div>
       </div>
@@ -110,17 +94,12 @@
         aria-controls="collapseTwo"
       >
         <h5 class="mb-0">Provas Realizadas</h5>
-        <span>4</span>
+        <span id="countFinalizada">0</span>
       </div>
       <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo">
         <div class="card-body">
           <div class="list-group">
-            <span class="list-group-item disabled"
-              >SAC_ COMERCIAL E COM_COMERCIAL_CLIENTES</span
-            >
-            <span class="list-group-item disabled">SAC_GERAL</span>
-            <span class="list-group-item disabled">STE_CANAIS</span>
-            <span class="list-group-item disabled">STE_IBC</span>
+            <!-- Aqui serão impressas as provas ja realizadas -->
           </div>
         </div>
       </div>
@@ -132,26 +111,98 @@
   $(document).ready(function () {
     $("#topbar").load("./views/templates/topbar.html");
     $(window).scrollTop(0);
+
+    var matricula = getCookie('matricula');
+    var matricula = '129756';
+
+    $.ajax({
+      url: `http://172.10.20.47/tinder_colombo/index.php?acao=2&matricula=${matricula}`,
+      type: 'GET',
+      dataType: 'JSON'
+    })
+    .done(function(result) {
+
+      if (result == "Sem provas") {
+        Swal.fire({
+          title: "Usuário sem provas encontradas!",
+          icon: "info"
+        });
+
+      } else {
+
+        var countPendente = 0, countFinalizada = 0;
+
+        result.forEach(prova => {
+
+          if (prova.status_prova == "Prova Pendente") {
+            countPendente++;
+            $('#collapseOne .list-group').append(`
+              <span class="list-group-item list-group-item-action" value="${prova.co_prova}">
+                ${prova.no_prova}
+              </span>`);
+              
+          } else if (prova.status_prova == "Prova Finalizada") {
+            countFinalizada++;
+            $('#collapseTwo .list-group').append(`
+              <span class="list-group-item disabled" value="${prova.co_prova}">
+                ${prova.no_prova}
+              </span>`);
+            
+          }
+        });
+
+        $('#countPendente').html(countPendente);
+        $('#countFinalizada').html(countFinalizada);
+
+        if (countPendente == 0) {
+          Swal.fire({
+            title: "Usuário sem provas a fazer!",
+            icon: "info"
+          });
+        }
+
+        $(".list-group-item-action").on("click", function () {
+          var provaId = $(this).val();
+          var provaNome = $(this).text();
+          
+          Swal.fire({
+            title: "Quer começar a prova de "+provaNome+"?",
+            text: "Não será possível pausar a prova!",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Sim, começar!",
+            cancelButtonText: "Não",
+          }).then((result) => {
+              
+            if (result.isConfirmed) {
+
+              // $.ajax({
+              //   url: `http://172.10.20.47/tinder_colombo/index.php?acao=4&matricula=${matricula}&prova=${provaId}`,
+              //   type: 'GET',
+              //   dataType: 'JSON'
+              // })
+              // .done(function(result) {
+                setCookie('prova', provaId, 1);
+                $('#conteudo').load('./views/prova.html');
+              // })
+              // .fail(function(result) {
+              //   triggerSweetAlertNotification('warning', 'Erro: '+result);
+              // });
+
+            }
+          });
+        });
+
+
+      }
+        
+    })
+    .fail(function(result) {
+      triggerSweetAlertNotification('warning', 'Erro: '+result);
+    });
+
   });
 
-  $(".list-group-item-action").on("click", function () {
-    var prova = $(this).text();
-    
-    Swal.fire({
-      title: "Quer começar a prova de " + prova + "?",
-      text: "Não será possível pausar a prova!",
-      icon: "question",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Sim, começar!",
-      cancelButtonText: "Não",
-    }).then((result) => {
-        
-      if (result.isConfirmed) {
-        setCookie('prova', prova, 1);
-        $('#conteudo').load('./views/prova.html');
-      }
-    });
-  });
 </script>
