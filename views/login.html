@@ -128,9 +128,30 @@
         return;
     }
 
-    setCookie('matricula', matricula, 30);
-    setCookie('cpf', cpf, 30);
+    // Caso todos os campos sejam validados
+    $.ajax({
+      url: `http://172.10.20.47/tinder_colombo/index.php?acao=1&matricula=${matricula}&cpf=${cpf}`,
+      type: 'GET',
+      dataType: 'JSON'
+    })
+    .done(function(result) {
 
-    $("#conteudo").load("./views/lista_provas.html");
+      if (result == "Usuario nao encontrado") {
+        triggerSweetAlertNotification('warning', 'Matrícula ou CPF incorreto!');
+
+      } else {
+        setCookie('matricula', matricula, 30);
+        setCookie('cpf', cpf, 30);
+        setCookie('nome', result[0].nome, 30);
+        setCookie('filial', result[0].filial, 30);
+        setCookie('co_funcao', result[0].co_funcao, 30);
+
+        $("#conteudo").load("./views/lista_provas.html");
+      }
+        
+    })
+    .fail(function(result) {
+      triggerSweetAlertNotification('warning', 'Erro: '+result);
+    });
   });
 </script>

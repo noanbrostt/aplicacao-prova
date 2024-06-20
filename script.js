@@ -114,3 +114,23 @@ function cookieExists(cookieName) {
 function deleteCookie(cookieName) {
     document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
 }
+
+function convertToCamelCase(name) {
+    return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+}
+
+function getFirstAndLastCamelCase(fullName) {
+    // Dividir a string em palavras
+    const words = fullName.split(' ');
+
+    // Selecionar a primeira e a última palavra
+    const firstName = words[0];
+    const lastName = words[words.length - 1];
+
+    // Converter para CamelCase
+    const firstNameCamelCase = convertToCamelCase(firstName);
+    const lastNameCamelCase = convertToCamelCase(lastName);
+
+    // Juntar as palavras resultantes
+    return `${firstNameCamelCase} ${lastNameCamelCase}`;
+}

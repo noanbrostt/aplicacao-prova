@@ -45,8 +45,9 @@
 <script>
     // Preenche nome do usuário ao carregar
     $(document).ready(function () {
-        const matricula = getCookie('matricula'); // Obtém o valor do cookie
-        $('#usuario span').html('Olá, '+matricula);
+        const fullName = getCookie('nome');
+        const camelCaseName = getFirstAndLastCamelCase(fullName);
+        $('#usuario span').html('Olá, '+camelCaseName);
     });
 
     // Função de Logoff
@@ -64,6 +65,10 @@
             deleteCookie('matricula');
             deleteCookie('cpf');
             deleteCookie('prova');
+            deleteCookie('nome');
+            deleteCookie('filial');
+            deleteCookie('co_funcao');
+
             triggerSweetAlertNotification('info', 'Deslogado!');
             $('#conteudo').load('./views/login.html');
         }
