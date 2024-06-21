@@ -74,25 +74,10 @@
 </header>
 
 <main>
-  <h2>SAC_COMERCIAL</h2>
+  <h2></h2>
 
-  <div class="questao">
-    <div class="info">
-      <span class="question">1. "Veja as orientações sobre as orientações que devem ser passadas após realizar o cancelamento do seguro prestamistae selecione a opção CORRETA: 
-      <br>I.	A CAIXA VIDA E PREVIDÊNCIA poderá entrar em contato por telefone com um DDD 82, dentro de um prazo de cerca de 5(cinco) dias úteis. Fique atento às chamadas em seu telefone, assim como desbloquear o recebimento de telefones desconhecidos
-      <br>II.	Em caso de aprovação do pedido de cancelamento, a devolução dos valores ocorrerá em até 15 dias úteis, podendo ocorrer por devolução em conta ou em forma de amortização (abatimento) do saldo devedor do contrato de empréstimo, de acordo com as condições específicas do seu contrato.
-      <br>III.	O contato com o resultado de seu pedido de cancelamento será feito pela seguradora, por telefone e por e-mail, por isso, reforçamos que desbloqueie o recebimento de chamadas de telefones desconhecidos e que além da caixa de entrada, confira também o lixo eletrônico e SPAM.
-      <br>IV.	O pedido de cancelamento e de estorno foi feito, o cancelamento ocorrerá de forma imediato, porém o estorno será realizado em 15 dias úteis na conta que o cliente selecionou para pagamento das prestações do contrato de empréstimo.
-      <br>V.	Será solicitado o cancelamento e para mais detalhes sobre a solicitação, o cliente poderá entrar em contato com a CAIXA VIDA E PREVIDÊNCIA. Basta informar o número de protocolo fornecido"</span>
-    </div>
-    <input type="radio" id="1-a" name="1" value="a" />
-    <label for="1-a">a) Computer Style Sheets</label>
-    <input type="radio" id="1-b" name="1" value="b" />
-    <label for="1-b">b) Cascading Style Sheets</label>
-    <input type="radio" id="1-c" name="1" value="c" />
-    <label for="1-c">c) Creative Style Sheets</label>
-  </div>
-
+  <!-- Exemplo de impressão -->
+  <!-- 
   <div class="questao">
     <div class="info">
       <span class="question">2. What does CSS stand for?</span>
@@ -103,49 +88,52 @@
     <label for="2-b">b) Cascading Style Sheets</label>
     <input type="radio" id="2-c" name="2" value="c" />
     <label for="2-c">c) Creative Style Sheets</label>
-  </div>
+  </div> 
+  -->
 
-  <div class="questao">
-    <div class="info">
-      <span class="question">3. What does CSS stand for?</span>
-    </div>
-    <input type="radio" id="3-a" name="3" value="a" />
-    <label for="3-a">a) Computer Style Sheets</label>
-    <input type="radio" id="3-b" name="3" value="b" />
-    <label for="3-b">b) Cascading Style Sheets</label>
-    <input type="radio" id="3-c" name="3" value="c" />
-    <label for="3-c">c) Creative Style Sheets</label>
-  </div>
-
-  <div class="questao">
-    <div class="info">
-      <span class="question">4. What does CSS stand for?</span>
-    </div>
-    <input type="radio" id="4-a" name="4" value="a" />
-    <label for="4-a">a) Computer Style Sheets</label>
-    <input type="radio" id="4-b" name="4" value="b" />
-    <label for="4-b">b) Cascading Style Sheets</label>
-    <input type="radio" id="4-c" name="4" value="c" />
-    <label for="4-c">c) Creative Style Sheets</label>
-  </div>
-
-  <button type="button" class="btn btn-success" id="entregarProva">Terminar prova</button>
 </main>
 
 <script>
   $(document).ready(function () {
     $("#topbar").load("./views/templates/topbar.html");
 
-    const matricula = getCookie('prova'); // Obtém o valor do cookie
-    $('main > h2').html('Prova de '+matricula);
+    const matricula = getCookie('matricula');
+    const provaId = getCookie('provaId');
+    const provaNome = getCookie('provaNome');
+    $('main > h2').html('Prova de '+provaNome);
+
+    $.ajax({
+      url: `https://colombo.plansul.com.br/psi/prova-api/?acao=3&prova=${provaId}`,
+      type: 'GET',
+      dataType: 'JSON'
+    })
+    .done(function(result) {
+
+      let countQuestoes = 1;
+
+      result.forEach(questao => {
+        let questaoMontada = construirQuestao(questao, countQuestoes);
+        $('main').append(questaoMontada);
+        countQuestoes++;
+      });
+      
+      $('main').append(`
+        <button type="button" class="btn btn-success" onClick="entregarProva()">
+          Terminar prova
+        </button>`);
+    })
+    .fail(function(result) {
+      triggerSweetAlertNotification('warning', 'Erro: '+result);
+    });
+
   });
 
-  $('#entregarProva').on('click', function() {
+
+  function entregarProva() {
     if ($('.questao:not(:has(input[type="radio"]:checked))').length > 0) {
         triggerSweetAlertNotification('warning', 'Responda todas as perguntas!');
         return;
     }
-
 
     Swal.fire({
       title: "Quer entregar a prova?",
@@ -158,11 +146,85 @@
     }).then((result) => {
         
       if (result.isConfirmed) {
-        deleteCookie('prova');
-        triggerSweetAlertNotification('success', 'Prova entregue!');
-        $('#conteudo').load('./views/lista_provas.html');
+
+        let dh_resposta = base64ToUtf8(getCookie('provaInicio'));
+        let ajaxCounter = 0;
+
+        $('.questao').each(function(i, obj) {
+
+          const co_prova = getCookie('provaId');
+          const co_pergunta = $(this).find('.question').attr('co_questao');
+          const co_alternativa = $(this).find('input[type="radio"]:checked').attr('co_alternativa');
+          const co_matricula = getCookie('matricula');
+
+          ajaxCounter++;
+
+          $.ajax({
+            url: `https://colombo.plansul.com.br/psi/prova-api/?acao=4&co_prova=${co_prova}&co_pergunta=${co_pergunta}&co_alternativa=${co_alternativa}&co_matricula=${co_matricula}&dh_resposta=${dh_resposta}`,
+            type: 'POST'
+          })
+          .done(function(result) {
+            ajaxCounter--;
+
+            if (ajaxCounter == 0) {
+
+              $.ajax({
+                url: `https://colombo.plansul.com.br/psi/prova-api/?acao=5&matricula=${co_matricula}`,
+                type: 'POST'
+              })
+              .done(function(result) {
+                deleteCookie('provaId');
+                deleteCookie('provaNome');
+                deleteCookie('provaInicio');
+
+                triggerSweetAlertNotification('success', 'Prova entregue!');
+                $('#conteudo').load('./views/lista_provas.html');
+
+              })
+              .fail(function(result) {
+                triggerSweetAlertNotification('warning', 'Erro: '+result);
+              });
+            }
+          })
+          .fail(function(result) {
+            triggerSweetAlertNotification('warning', 'Erro: '+result);
+          });
+
+          dh_resposta = getCurrentTime();
+        });
       }
     });
+  };
 
-  });
+
+  function construirQuestao(questao, numeroQuestao) {
+    // Expressão regular para identificar números romanos
+    let regex = /\b([IVXLCDMivxlcdm]+)\./g;
+    // Função para substituir os números romanos por eles mesmos com <br> antes
+    let novoTexto = questao.de_pergunta.replace(regex, '<br>$1.');
+
+    let letra = 'a';
+    let questaoHTML = `
+      <div class="questao">
+        <div class="info">
+          <span class="question" co_questao="${questao.co_pergunta}">${numeroQuestao}. ${novoTexto}</span>
+        </div>`;
+
+    questao.alternativas.split(';.;').forEach(alternativaComCodigo => {
+      let alternativa = alternativaComCodigo.split(':-D');
+
+      questaoHTML += `
+        <input type="radio" id="${numeroQuestao}-${letra}" name="${numeroQuestao}" value="${letra}" co_alternativa="${alternativa[0]}" />
+        <label for="${numeroQuestao}-${letra}">${letra}) ${alternativa[1]}</label>`;
+      letra = proximaLetra(letra);
+    });
+
+    questaoHTML += `</div>`;
+    return questaoHTML;
+  }
+
+
+  function proximaLetra(letra) {
+    return String.fromCharCode(letra.charCodeAt(0) + 1);
+  };
 </script>

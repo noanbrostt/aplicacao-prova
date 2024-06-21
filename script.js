@@ -2,14 +2,13 @@ $(document).ready(function(){
 
     if (!cookieExists('matricula')) {
         $('#conteudo').load('./views/login.html');
-    } else if (cookieExists('prova')) {
+    } else if (cookieExists('provaId')) {
         $('#conteudo').load('./views/prova.html');
     } else {
         $('#conteudo').load('./views/lista_provas.html');
-        // $('#conteudo').load('./views/prova.html');
     }
 
-    // dificultarInspecionarElemento();
+    dificultarInspecionarElemento();
 });
 
 // Chama uma notificação no canto superior direito que dura 2 segundos
@@ -133,4 +132,26 @@ function getFirstAndLastCamelCase(fullName) {
 
     // Juntar as palavras resultantes
     return `${firstNameCamelCase} ${lastNameCamelCase}`;
+}
+
+function getCurrentTime() {
+    const now = new Date();
+
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0'); // getMonth() retorna meses de 0 a 11
+    const day = String(now.getDate()).padStart(2, '0');
+    
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+}
+
+function utf8ToBase64(str) {
+    return btoa(unescape(encodeURIComponent(str)));
+}
+
+function base64ToUtf8(base64) {
+    return decodeURIComponent(escape(atob(base64)));
 }

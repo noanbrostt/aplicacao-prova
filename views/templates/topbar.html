@@ -64,10 +64,12 @@
         if (result.isConfirmed) {
             deleteCookie('matricula');
             deleteCookie('cpf');
-            deleteCookie('prova');
+            deleteCookie('provaId');
+            deleteCookie('provaNome');
             deleteCookie('nome');
             deleteCookie('filial');
             deleteCookie('co_funcao');
+            deleteCookie('provaInicio');
 
             triggerSweetAlertNotification('info', 'Deslogado!');
             $('#conteudo').load('./views/login.html');

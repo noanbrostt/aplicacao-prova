@@ -99,7 +99,9 @@
       <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo">
         <div class="card-body">
           <div class="list-group">
+
             <!-- Aqui serão impressas as provas ja realizadas -->
+             
           </div>
         </div>
       </div>
@@ -113,10 +115,9 @@
     $(window).scrollTop(0);
 
     var matricula = getCookie('matricula');
-    var matricula = '129756';
 
     $.ajax({
-      url: `http://172.10.20.47/tinder_colombo/index.php?acao=2&matricula=${matricula}`,
+      url: `https://colombo.plansul.com.br/psi/prova-api/?acao=2&matricula=${matricula}`,
       type: 'GET',
       dataType: 'JSON'
     })
@@ -162,8 +163,8 @@
         }
 
         $(".list-group-item-action").on("click", function () {
-          var provaId = $(this).val();
-          var provaNome = $(this).text();
+          var provaId = $(this).attr('value');
+          var provaNome = $(this).text().trim();
           
           Swal.fire({
             title: "Quer começar a prova de "+provaNome+"?",
@@ -177,19 +178,11 @@
           }).then((result) => {
               
             if (result.isConfirmed) {
+                setCookie('provaId', provaId, 30);
+                setCookie('provaNome', provaNome, 30);
+                setCookie('provaInicio', utf8ToBase64(getCurrentTime()), 30);
 
-              // $.ajax({
-              //   url: `http://172.10.20.47/tinder_colombo/index.php?acao=4&matricula=${matricula}&prova=${provaId}`,
-              //   type: 'GET',
-              //   dataType: 'JSON'
-              // })
-              // .done(function(result) {
-                setCookie('prova', provaId, 1);
                 $('#conteudo').load('./views/prova.html');
-              // })
-              // .fail(function(result) {
-              //   triggerSweetAlertNotification('warning', 'Erro: '+result);
-              // });
 
             }
           });

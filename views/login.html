@@ -94,7 +94,7 @@
 
 <div class="container">
   <div class="form">
-    <h1>Provas PSI Plansul</h1>
+    <img src="../assets/img/gente-logo-DL-aO9es.png" alt="Gente, Cultura e Gestão">
 
     <div class="inputGroup">
       <input type="text" required="" autocomplete="off" id="matricula" />
@@ -131,13 +131,13 @@
 
     // Caso todos os campos sejam validados
     $.ajax({
-      url: `http://172.10.20.47/tinder_colombo/index.php?acao=1&matricula=${matricula}&cpf=${cpf}`,
+      url: `https://colombo.plansul.com.br/psi/prova-api/?acao=1&matricula=${matricula}&cpf=${cpf}`,
       type: 'GET',
       dataType: 'JSON'
     })
     .done(function(result) {
 
-      if (result == "Usuario nao encontrado") {
+      if (result == "Usuário não encontrado") {
         triggerSweetAlertNotification('warning', 'Matrícula ou CPF incorreto!');
 
       } else {
