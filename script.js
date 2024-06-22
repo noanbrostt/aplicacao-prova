@@ -71,7 +71,7 @@ function dificultarInspecionarElemento() {
 function setCookie(name, value, daysToExpire) {
     const expirationDate = new Date();
     expirationDate.setDate(expirationDate.getDate() + daysToExpire);
-    const cookieValue = `${name}=${value}; expires=${expirationDate.toUTCString()}; path=/`;
+    const cookieValue = `${name}=${utf8ToBase64(value)}; expires=${expirationDate.toUTCString()}; path=/`;
     document.cookie = cookieValue;
 }
 
@@ -87,7 +87,7 @@ function getCookie(cookieName) {
             cookie = cookie.substring(1);
         }
         if (cookie.indexOf(name) === 0) {
-            return cookie.substring(name.length, cookie.length);
+            return base64ToUtf8(cookie.substring(name.length, cookie.length));
         }
     }
     return '';

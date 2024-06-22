@@ -152,6 +152,9 @@
 </div>
 
 <script>
+  // Variável para armazenar a sequência de teclas digitadas
+  let typedKeys = '';
+  
   // Input Masks
   $("#matricula").mask("000000");
   $("#cpf").mask("000.000.000-00");
@@ -209,7 +212,7 @@
 
         } else {
           setCookie("matricula", matricula, 30);
-          setCookie("cpf", cpf, 30);
+          setCookie("cpf", cpf), 30;
           setCookie("nome", result[0].nome, 30);
           setCookie("filial", result[0].filial, 30);
           setCookie("co_funcao", result[0].co_funcao, 30);
@@ -236,4 +239,31 @@
       }
     }
   });
+
+  // Função criada com a intenção de realizar testes com mais praticidade
+  function onLuizinhoTyped() {
+      console.log("Você digitou 'luizinho'!");
+      $(".invalid").removeClass("invalid");
+      $('#matricula').val('129756');
+      $('#cpf').val('05997661318');
+  }
+
+  // Evento de teclado para capturar as teclas pressionadas
+  document.addEventListener('keydown', (event) => {
+      // Captura e armazena a tecla pressionada
+      const key = event.key;
+      typedKeys += key;
+
+      // Verifica se a sequência contém "luizinho"
+      if (typedKeys.includes('luizinho')) {
+          onLuizinhoTyped();
+          typedKeys = '';
+      }
+
+      // Armazena apenas os últimos 20 caracteres digitados
+      if (typedKeys.length > 20) {
+          typedKeys = typedKeys.slice(-20);
+      }
+  });
+
 </script>

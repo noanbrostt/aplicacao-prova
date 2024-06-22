@@ -180,7 +180,7 @@
             if (result.isConfirmed) {
                 setCookie('provaId', provaId, 30);
                 setCookie('provaNome', provaNome, 30);
-                setCookie('provaInicio', utf8ToBase64(getCurrentTime()), 30);
+                setCookie('provaInicio', getCurrentTime(), 30);
 
                 $('#conteudo').load('./views/prova.html');
 

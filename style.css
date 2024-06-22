@@ -48,9 +48,26 @@ input, textarea {
   margin-top: 68px; /* Tamanho do topbar */
   padding-block: 8px;
 }
-.btn-primary {
-  background: var(--bg-blue);
+/* Customiza a largura da scrollbar */
+::-webkit-scrollbar {
+    width: 16px;  /* Ajuste a largura conforme necessário */
 }
-.btn-primary:hover {
-  background: var(--bg-blue-light);
+/* Customiza a track da scrollbar (área de fundo) */
+::-webkit-scrollbar-track {
+    background: var(--contrast-secondary);  /* Cor de fundo */
+    border-radius: 10px;  /* Bordas arredondadas */
+}
+/* Customiza o thumb da scrollbar (a parte que se move) */
+::-webkit-scrollbar-thumb {
+    background-color: var(--bg-blue);  /* Cor do thumb */
+    border-radius: 10px;  /* Bordas arredondadas */
+    border: 2px solid var(--contrast-secondary);  /* Borda ao redor do thumb para espaçamento */
+}
+/* Customiza o thumb da scrollbar quando estiver em hover */
+::-webkit-scrollbar-thumb:hover {
+    background: var(--bg-blue-light);  /* Cor do thumb em hover */
+}
+/* Remove as setas de cima e de baixo da scrollbar */
+::-webkit-scrollbar-button {
+    display: none;
 }

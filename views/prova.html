@@ -26,12 +26,13 @@
     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
     width: 96%;
-    transition: .3s;
     background-color: #fff;
     text-align: justify;
   }
   .questao:has(input[type="radio"]:checked) {
-    background-color: #42ff425c;
+    /* background-color: #42ff425c; */
+    border: 2px solid var(--bg-blue);
+    padding: 16px;
   }
   .questao input {
     display: none;
@@ -57,15 +58,16 @@
     border-radius: 10px;
     cursor: pointer;
     border: 1px solid rgba(187, 187, 187, 0.164);
-    transition: 0.3s ease;
   }
   .questao label:hover {
     background-color: rgba(24, 24, 24, 0.13);
     border: 1px solid #bbb;
   }
   .questao input[type="radio"]:checked + label {
-    border-color: var(--bg-blue);
+    background-color: rgb(24 24 24 / 18%);
+    border: 2px solid var(--bg-blue);
     color: var(--bg-blue);
+    padding: 13px;
   }
 </style>
 
@@ -147,7 +149,7 @@
         
       if (result.isConfirmed) {
 
-        let dh_resposta = base64ToUtf8(getCookie('provaInicio'));
+        let dh_resposta = getCookie('provaInicio');
         let ajaxCounter = 0;
 
         $('.questao').each(function(i, obj) {
