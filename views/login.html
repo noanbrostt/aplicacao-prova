@@ -26,7 +26,7 @@
     border-radius: 30px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
     overflow: hidden;
-    width: 410px;
+    width: 335px;
     max-width: 98%;
     min-height: 380px;
     margin-inline: auto;
@@ -46,7 +46,7 @@
     letter-spacing: 0.5px;
     text-transform: uppercase;
     cursor: pointer;
-    width: 350px;
+    width: 280px;
   }
   .form {
     color: var(--contrast-secondary);
@@ -55,6 +55,10 @@
     justify-content: center;
     flex-direction: column;
     height: 100%;
+    padding-bottom: 8px;
+  }
+  .form img {
+    filter: drop-shadow(0px 0px 3px black);
   }
   input {
     background-color: #eee;
@@ -65,7 +69,7 @@
     border-radius: 8px;
     width: 100%;
     outline: none;
-    width: 350px;
+    width: 280px;
   }
   .inputGroup {
     position: relative;
@@ -88,13 +92,50 @@
     transform: translateY(-145%);
     font-size: 14px;
   }
+  .entrar {
+    color: var(--contrast-secondary);
+    background: var(--bg-blue);
+  }
+  .entrar:hover {
+    background: var(--bg-blue-light);
+  }
+
+  .inputGroup.invalid input {
+    border: 2px solid rgb(165, 19, 19);
+    color: rgb(165, 19, 19);
+    animation: shake 0.3s forwards;
+  }
+  .inputGroup.invalid label {
+    color: rgb(165, 19, 19);
+  }
+
+  @keyframes shake {
+    25% {
+      transform: translateX(5px);
+    }
+
+    50% {
+      transform: translateX(-5px);
+    }
+
+    75% {
+      transform: translateX(5px);
+    }
+
+    100% {
+      transform: translateX-(5px);
+    }
+  }
 </style>
 
 <div id="logo"><img src="./assets/img/logo.png" alt="Logo" /></div>
 
 <div class="container">
   <div class="form">
-    <img src="./assets/img/gente-logo-DL-aO9es.png" alt="Gente, Cultura e Gestão">
+    <img
+      src="./assets/img/gente-logo-DL-aO9es.png"
+      alt="Gente, Cultura e Gestão"
+    />
 
     <div class="inputGroup">
       <input type="text" required="" autocomplete="off" id="matricula" />
@@ -106,7 +147,7 @@
       <label for="cpf">CPF</label>
     </div>
 
-    <button class="btn btn-primary entrar">Entrar</button>
+    <button class="btn entrar">Entrar</button>
   </div>
 </div>
 
@@ -118,41 +159,81 @@
 
   $(".entrar").on("click", function () {
 
-    var matricula = $('#matricula').val().trim();
+    $(".invalid").removeClass("invalid");
+    let matriculaPass = true, cpfPass = true;
+
+    var matricula = $("#matricula").val().trim();
     if (matricula.length < 6) {
-        triggerSweetAlertNotification('warning', 'Informe sua matrícula Plansul!');
-        return;
+      setTimeout(() => {
+        $("#matricula").parent().addClass("invalid");
+      }, 1);
+      matriculaPass = false;
     }
-    var cpf = $('#cpf').val().trim().replace(/\D/g, '');
+    var cpf = $("#cpf").val().trim().replace(/\D/g, "");
     if (cpf.length < 11) {
-        triggerSweetAlertNotification('warning', 'Informe seu CPF!');
-        return;
+      setTimeout(() => {
+        $("#cpf").parent().addClass("invalid");
+      }, 1);
+      cpfPass = false;
+    }
+
+    if (!matriculaPass && !cpfPass) {
+      triggerSweetAlertNotification("warning", "Informe matrícula e CPF!");
+      return;
+    } else if (!matriculaPass) {
+      triggerSweetAlertNotification("warning", "Informe sua matrícula Plansul!");
+      return;
+    } else if (!cpfPass) {
+      triggerSweetAlertNotification("warning", "Informe seu CPF!");
+      return;
     }
 
     // Caso todos os campos sejam validados
     $.ajax({
       url: `https://colombo.plansul.com.br/psi/prova-api/?acao=1&matricula=${matricula}&cpf=${cpf}`,
-      type: 'GET',
-      dataType: 'JSON'
+      type: "GET",
+      dataType: "JSON",
     })
-    .done(function(result) {
+      .done(function (result) {
+        if (result[0] == "Erro") {
+          triggerSweetAlertNotification(
+            "warning",
+            result[1]
+          );
 
-      if (result == "Usuário não encontrado") {
-        triggerSweetAlertNotification('warning', 'Matrícula ou CPF incorreto!');
+          if (result[1] == "Matrícula não encontrada!") {
+            $("#matricula").parent().addClass("invalid");
+          } else {
+            $("#cpf").parent().addClass("invalid");
+          }
 
-      } else {
-        setCookie('matricula', matricula, 30);
-        setCookie('cpf', cpf, 30);
-        setCookie('nome', result[0].nome, 30);
-        setCookie('filial', result[0].filial, 30);
-        setCookie('co_funcao', result[0].co_funcao, 30);
+        } else {
+          setCookie("matricula", matricula, 30);
+          setCookie("cpf", cpf, 30);
+          setCookie("nome", result[0].nome, 30);
+          setCookie("filial", result[0].filial, 30);
+          setCookie("co_funcao", result[0].co_funcao, 30);
 
-        $("#conteudo").load("./views/lista_provas.html");
+          $("#conteudo").load("./views/lista_provas.html");
+        }
+      })
+      .fail(function (result) {
+        triggerSweetAlertNotification("warning", "Erro: " + result);
+      });
+  });
+
+  $(".inputGroup input").on("keydown || focus", function (e) {
+    $(this).parent().removeClass("invalid");
+
+    e = e || window.event;
+    var code = e.which || e.keyCode;
+    
+    if (code == 13) {
+      if ($(this).attr('id') == 'matricula') {
+        $('#cpf').focus();
+      } else if ($(this).attr('id') == 'cpf') {
+        $('.entrar').click();
       }
-        
-    })
-    .fail(function(result) {
-      triggerSweetAlertNotification('warning', 'Erro: '+result);
-    });
+    }
   });
 </script>

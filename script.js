@@ -21,7 +21,7 @@ function triggerSweetAlertNotification(icon, title) {
         icon: icon,
         title: title,
         showConfirmButton: false,
-        timer: 2000
+        timer: 2800
     });
 }
 
