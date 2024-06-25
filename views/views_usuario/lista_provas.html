@@ -55,9 +55,7 @@
   }
 </style>
 
-<header id="topbar">
-  <!-- "./views/templates/topbar.html" -->
-</header>
+
 
 <main>
   <div id="accordion">
@@ -111,7 +109,6 @@
 
 <script>
   $(document).ready(function () {
-    $("#topbar").load("./views/templates/topbar.html");
     $(window).scrollTop(0);
 
     var matricula = getCookie('matricula');
@@ -162,7 +159,7 @@
           });
         }
 
-        $(".list-group-item-action").on("click", function () {
+        $(".list-group-item-action").off("click").on("click", function () {
           var provaId = $(this).attr('value');
           var provaNome = $(this).text().trim();
           
@@ -182,8 +179,7 @@
                 setCookie('provaNome', provaNome, 30);
                 setCookie('provaInicio', getCurrentTime(), 30);
 
-                $('#conteudo').load('./views/prova.html');
-
+                $('#conteudo').load('./views/views_usuario/prova.html');
             }
           });
         });

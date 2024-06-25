@@ -15,7 +15,7 @@
   main > h2 {
     padding: 8px 12px;
     position: sticky;
-    top: 68px;
+    top: var(--topbar-height);
     background: #dee3e9;
     width: calc(100% + 32px);
   }
@@ -71,25 +71,21 @@
   }
 </style>
 
-<header id="topbar">
-  <!-- "./views/templates/topbar.html" -->
-</header>
-
 <main>
-  <h2></h2>
+  <h2>Prova de SAC_EXEMPLO</h2>
 
   <!-- Exemplo de impressão -->
   <!-- 
   <div class="questao">
     <div class="info">
-      <span class="question">2. What does CSS stand for?</span>
+      <span class="question">1. What does CSS stand for?</span>
     </div>
-    <input type="radio" id="2-a" name="2" value="a" />
-    <label for="2-a">a) Computer Style Sheets</label>
-    <input type="radio" id="2-b" name="2" value="b" />
-    <label for="2-b">b) Cascading Style Sheets</label>
-    <input type="radio" id="2-c" name="2" value="c" />
-    <label for="2-c">c) Creative Style Sheets</label>
+    <input type="radio" id="1-a" name="1" value="a" />
+    <label for="1-a">a) Computer Style Sheets</label>
+    <input type="radio" id="1-b" name="1" value="b" />
+    <label for="1-b">b) Cascading Style Sheets</label>
+    <input type="radio" id="1-c" name="1" value="c" />
+    <label for="1-c">c) Creative Style Sheets</label>
   </div> 
   -->
 
@@ -97,8 +93,6 @@
 
 <script>
   $(document).ready(function () {
-    $("#topbar").load("./views/templates/topbar.html");
-
     const matricula = getCookie('matricula');
     const provaId = getCookie('provaId');
     const provaNome = getCookie('provaNome');
@@ -180,7 +174,7 @@
                 deleteCookie('provaInicio');
 
                 triggerSweetAlertNotification('success', 'Prova entregue!');
-                $('#conteudo').load('./views/lista_provas.html');
+                $('#conteudo').load('./views/views_usuario/lista_provas.html');
 
               })
               .fail(function(result) {

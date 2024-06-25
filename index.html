@@ -14,6 +14,14 @@
 
     <body>
 
+        <header id="topbar">
+            <!-- "./views/templates/topbar.html" -->
+        </header>
+
+        <nav id="sidebar" class="active">
+            <!-- "./views/templates/sidebar.html" -->
+        </nav>
+
         <div id="conteudo">
             <!-- Local onde são impressas as telas -->
         </div>
@@ -21,11 +29,14 @@
 
         <script src="./assets/js/boxicons.js"></script>
         <script src="./assets/js/sweetalert2.js"></script>
-        <script src="./assets/js/fontawesome.min.js"></script>
+        <!-- <script src="./assets/js/fontawesome.min.js"></script> -->
         <script src="./assets/js/jquery-3.7.1.min.js"></script>
         <script src="./assets/js/bootstrap-4.0.0.min.js"></script>
         <script src="./assets/js/jquery.mask-1.14.15.min.js"></script>
 
         <script src="./script.js"></script>
+        <script>
+            $("#topbar").load("./views/templates/topbar.html");
+        </script>
     </body>
 </html>

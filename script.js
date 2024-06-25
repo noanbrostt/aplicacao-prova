@@ -1,14 +1,14 @@
 $(document).ready(function(){
 
     if (!cookieExists('matricula')) {
-        $('#conteudo').load('./views/login.html');
+        $('#conteudo').load('./views/templates/login.html');
     } else if (cookieExists('provaId')) {
-        $('#conteudo').load('./views/prova.html');
+        $('#conteudo').load('./views/views_usuario/prova.html');
     } else {
-        $('#conteudo').load('./views/lista_provas.html');
+        $('#conteudo').load('./views/views_usuario/lista_provas.html');
     }
 
-    dificultarInspecionarElemento();
+    // dificultarInspecionarElemento();
 });
 
 // Chama uma notificação no canto superior direito que dura 2 segundos

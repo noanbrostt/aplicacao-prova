@@ -1,7 +1,7 @@
 <style>
     #topbar {
         width: 100%;
-        height: 68px;
+        height: var(--topbar-height);
         background: var(--bg-blue);
         display: flex;
         align-items: center;
@@ -11,11 +11,11 @@
         top: 0;
         z-index: 2;
     }
-    #logo {
+    #topbar #logo {
         width: 145px;
         margin-bottom: 6px;
     }
-    #logo img {
+    #topbar #logo img {
         width: 100%;
     }
     #usuario {
@@ -35,45 +35,45 @@
 </style>
 
 <!-- <header id="topbar"> -->
-        <div id="logo"><img src="./assets/img/logo.png" alt="Logo" /></div>
-        <div id="usuario">
-            <span>Olá, Noan Brostt</span>
-            <box-icon name='log-out' animation='tada-hover' color='var(--contrast-secondary)' ></box-icon>
-        </div>
+<div id="logo"><img src="./assets/img/logo.png" alt="Logo" /></div>
+
+<div id="usuario">
+    <span>Olá, Noan Brostt</span>
+    <box-icon
+        name="log-out"
+        animation="tada-hover"
+        color="var(--contrast-secondary)"
+    ></box-icon>
+</div>
 <!-- </header> -->
 
 <script>
-    // Preenche nome do usuário ao carregar
-    $(document).ready(function () {
-        const fullName = getCookie('nome');
-        const camelCaseName = getFirstAndLastCamelCase(fullName);
-        $('#usuario span').html('Olá, '+camelCaseName);
-    });
-
     // Função de Logoff
-    $('#usuario box-icon').on('click', function() {
-        Swal.fire({
-            title: "Deseja sair da sua conta?",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Sim, sair!",
-            cancelButtonText: "Não",
-        }).then((result) => {
-        if (result.isConfirmed) {
-            deleteCookie('matricula');
-            deleteCookie('cpf');
-            deleteCookie('provaId');
-            deleteCookie('provaNome');
-            deleteCookie('nome');
-            deleteCookie('filial');
-            deleteCookie('co_funcao');
-            deleteCookie('provaInicio');
+    $("#usuario box-icon")
+        .off("click")
+        .on("click", function () {
+            Swal.fire({
+                title: "Deseja sair da sua conta?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Sim, sair!",
+                cancelButtonText: "Não",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    deleteCookie("matricula");
+                    deleteCookie("cpf");
+                    deleteCookie("provaId");
+                    deleteCookie("provaNome");
+                    deleteCookie("nome");
+                    deleteCookie("filial");
+                    deleteCookie("co_funcao");
+                    deleteCookie("provaInicio");
 
-            triggerSweetAlertNotification('info', 'Deslogado!');
-            $('#conteudo').load('./views/login.html');
-        }
+                    triggerSweetAlertNotification("info", "Deslogado!");
+                    $("#conteudo").load("./views/templates/login.html");
+                }
+            });
         });
-    });
 </script>

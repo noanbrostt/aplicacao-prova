@@ -6,6 +6,12 @@
   --bg-orange: #ff793c;
   --contrast-primary: #333333;
   --contrast-secondary: #e6e6e6;
+
+  --topbar-height: 68px;
+  --sidebar-width: 65px;
+}
+:root:has(#sidebar.active) {
+  --sidebar-width: 210px;
 }
 * {
   margin: 0;
@@ -13,7 +19,41 @@
   box-sizing: border-box;
   font-family: "Montserrat", sans-serif;
 }
-/*desabilita a seleção no body*/
+body {
+  display: flex;
+}
+#conteudo {
+  width: 100%;
+  height: calc(100vh - var(--topbar-height));
+  margin-top: var(--topbar-height);
+  padding-block: 8px;
+}
+.d-contents {
+  display: contents;
+}
+
+
+/* Customização do scrollbar */
+::-webkit-scrollbar {
+    width: 16px; 
+}
+::-webkit-scrollbar-track {
+    background: var(--contrast-secondary);
+}
+::-webkit-scrollbar-thumb {
+    background-color: var(--bg-blue);
+    border-radius: 10px;
+    border: 2px solid var(--contrast-secondary);
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--bg-blue-light);
+}
+::-webkit-scrollbar-button {
+    display: none;
+}
+/*  */
+
+/* Desabilita a seleção com o mouse no site, com exceção dos inputs */
 body {
   -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Chrome/Safari/Opera */
@@ -22,8 +62,6 @@ body {
         -ms-user-select: none; /* Internet Explorer/Edge */
             user-select: none;
 }
-
-/*habilita a seleção nos campos editaveis*/
 input, textarea {
   -webkit-touch-callout: initial; /* iOS Safari */
     -webkit-user-select: text; /* Chrome/Safari/Opera */
@@ -32,8 +70,6 @@ input, textarea {
         -ms-user-select: text; /* Internet Explorer/Edge */
             user-select: text;
 }
-
-/*habilita a seleção nos campos com o atributo contenteditable*/
 [contenteditable=true] {
   -webkit-touch-callout: initial; /* iOS Safari */
     -webkit-user-select: all; /* Chrome/Safari/Opera */
@@ -42,32 +78,4 @@ input, textarea {
         -ms-user-select: all; /* Internet Explorer/Edge */
             user-select: all;
 }
-#conteudo {
-  width: 100%;
-  height: calc(100vh - 68px);
-  margin-top: 68px; /* Tamanho do topbar */
-  padding-block: 8px;
-}
-/* Customiza a largura da scrollbar */
-::-webkit-scrollbar {
-    width: 16px;  /* Ajuste a largura conforme necessário */
-}
-/* Customiza a track da scrollbar (área de fundo) */
-::-webkit-scrollbar-track {
-    background: var(--contrast-secondary);  /* Cor de fundo */
-    border-radius: 10px;  /* Bordas arredondadas */
-}
-/* Customiza o thumb da scrollbar (a parte que se move) */
-::-webkit-scrollbar-thumb {
-    background-color: var(--bg-blue);  /* Cor do thumb */
-    border-radius: 10px;  /* Bordas arredondadas */
-    border: 2px solid var(--contrast-secondary);  /* Borda ao redor do thumb para espaçamento */
-}
-/* Customiza o thumb da scrollbar quando estiver em hover */
-::-webkit-scrollbar-thumb:hover {
-    background: var(--bg-blue-light);  /* Cor do thumb em hover */
-}
-/* Remove as setas de cima e de baixo da scrollbar */
-::-webkit-scrollbar-button {
-    display: none;
-}
+/*  */
