@@ -4,6 +4,8 @@ $(document).ready(function(){
         $('#conteudo').load('./views/templates/login.html');
     } else if (cookieExists('provaId')) {
         $('#conteudo').load('./views/views_usuario/prova.html');
+    } else if (cookieExists('ultimaRota')) {
+        $('#conteudo').load(`./views/views_admin/${getCookie('ultimaRota')}.html`);
     } else {
         $('#conteudo').load('./views/views_usuario/lista_provas.html');
     }

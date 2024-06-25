@@ -70,6 +70,8 @@
                     deleteCookie("filial");
                     deleteCookie("co_funcao");
                     deleteCookie("provaInicio");
+                    deleteCookie("ultimaRota");
+                    $("#sidebar").html("");
 
                     triggerSweetAlertNotification("info", "Deslogado!");
                     $("#conteudo").load("./views/templates/login.html");

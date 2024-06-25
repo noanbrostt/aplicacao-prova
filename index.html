@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="author" content="Noan Caliel Brostt (P782693 - 123036)">
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="author" content="Noan Caliel Brostt (P782693 - 123036)" />
 
-        <link rel="stylesheet" href="./assets/css/bootstrap.min.css">
-        <link rel="stylesheet" href="./style.css">
+        <link rel="stylesheet" href="./assets/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="./assets/css/dataTables.css" />
+        <link rel="stylesheet" href="./style.css" />
 
-        <link rel="icon" type="image/x-icon" href="./assets/img/icon.ico">
+        <link rel="icon" type="image/x-icon" href="./assets/img/icon.ico" />
         <title>Provas PSI Plansul</title>
     </head>
 
     <body>
-
         <header id="topbar">
             <!-- "./views/templates/topbar.html" -->
         </header>
@@ -26,17 +26,24 @@
             <!-- Local onde são impressas as telas -->
         </div>
 
-
+          
         <script src="./assets/js/boxicons.js"></script>
         <script src="./assets/js/sweetalert2.js"></script>
-        <!-- <script src="./assets/js/fontawesome.min.js"></script> -->
         <script src="./assets/js/jquery-3.7.1.min.js"></script>
+        <script src="./assets/js/dataTables.js"></script>
         <script src="./assets/js/bootstrap-4.0.0.min.js"></script>
         <script src="./assets/js/jquery.mask-1.14.15.min.js"></script>
 
         <script src="./script.js"></script>
         <script>
             $("#topbar").load("./views/templates/topbar.html");
+
+            // Permissão de Admin
+            if (getFirstAndLastCamelCase(getCookie('nome')) == "Noan Brostt") {
+                $("#sidebar").load("./views/templates/sidebar.html");
+            } else {
+                $("#sidebar").html("");
+            }
         </script>
     </body>
 </html>
