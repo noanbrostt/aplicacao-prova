@@ -112,6 +112,9 @@
         font-size: 30px;
         transition-duration: 0.3s;
     }
+    #sidebar #botoes_sidebar > box-icon:not(:first-child) {
+        margin-top: 30px;
+    }
     #sidebar:not(.active) #botoes_sidebar box-icon {
         font-size: 4px;
     }
@@ -178,7 +181,7 @@
     <h6>Gestão de Usuários</h6>
     <div class="divisao"></div>
 
-    <button class="sidebar_btn blue_btn" target="habilitar_perfil">
+    <button class="sidebar_btn blue_btn" target="habilitar_admin">
         <box-icon
             name="user-plus"
             animation="tada-hover"
@@ -188,6 +191,24 @@
         <p>Habilitar Perfil</p>
     </button>
 
+    <box-icon
+        name="report"
+        type="solid"
+        color="#f1f0f0"
+        size="cssSize"
+    ></box-icon>
+    <h6>Relatórios</h6>
+    <div class="divisao"></div>
+
+    <button class="sidebar_btn blue_btn" target="relatorio_geral">
+        <box-icon
+            name="network-chart"
+            animation="tada-hover"
+            color="#ffffff"
+            size="cssSize"
+        ></box-icon>
+        <p>Relatório Geral</p>
+    </button>
 </div>
 <!-- </nav> -->
 
@@ -202,9 +223,9 @@
     });
 
     // Rotas
-    $('.sidebar_btn').on('click', function() {
-        let route = $(this).attr('target');
-        setCookie('ultimaRota', route, 30);
+    $(".sidebar_btn").on("click", function () {
+        let route = $(this).attr("target");
+        setCookie("ultimaRota", route, 30);
         $("#conteudo").load(`./views/views_admin/${route}.html`);
     });
 </script>

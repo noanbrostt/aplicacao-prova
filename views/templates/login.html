@@ -237,9 +237,14 @@
 
                         // Permissão de Admin
                         if (camelCaseName == "Noan Brostt") {
+                            setCookie("usuario", "admin", 30);
                             $("#sidebar").load(
                                 "./views/templates/sidebar.html"
                             );
+                            $("#conteudo").load(
+                                "./views/views_admin/habilitar_admin.html"
+                            );
+                            return;
                         } else {
                             $("#sidebar").html("");
                         }

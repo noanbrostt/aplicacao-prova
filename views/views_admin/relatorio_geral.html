@@ -1,0 +1,86 @@
+<style>
+    #conteudo {
+        padding: 20px;
+    }
+    h2 {
+        width: 96%;
+        margin: 10px auto 20px;
+    }
+    main {
+        background-color: #02295421;
+        width: 96%;
+        margin: 2vh auto;
+        border-radius: 12px;
+        padding: 16px;
+    }
+    .linha {
+        display: flex;
+        justify-content: space-evenly;
+    }
+    .card {
+        width: 46%;
+    }
+    .card-header {
+        background-color: var(--bg-blue);
+        color: white;
+    }
+    .card-body {
+        display: flex;
+        gap: 20px;
+    }
+    .card-body fieldset {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+</style>
+
+<h2>Relatório Geral</h2>
+
+<main>
+    <div class="linha">
+        <div class="card" style="max-width: 50%">
+            <div class="card-header">Data da Prova</div>
+            <div class="card-body text-dark">
+                <fieldset>
+                    <label for="">Início</label>
+                    <input type="date" />
+                </fieldset>
+                <fieldset>
+                    <label for="">Fim</label>
+                    <input type="date" />
+                </fieldset>
+            </div>
+        </div>
+
+        <div class="card" style="max-width: 50%">
+            <div class="card-header">Nome da Prova</div>
+            <div class="card-body text-dark">
+                <fieldset>
+                    <select
+                        name="nomeProva"
+                        id="nomeProva"
+                        class="selectpicker"
+                    >
+                        <option value="1">arroz</option>
+                        <option value="2">feijao</option>
+                        <option value="3">batata</option>
+                        <option value="4">rocambole</option>
+                    </select>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    $("#nomeProva").select2({
+        width: "100%",
+        search: true,
+        tag: false,
+        placeholder: "Todas selecionadas",
+        allowClear: true,
+        multiple: true,
+        clearButtontext: "Limpar Seleção",
+    });
+</script>

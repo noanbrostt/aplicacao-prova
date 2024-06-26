@@ -28,13 +28,31 @@ body {
     margin-top: var(--topbar-height);
     padding-block: 8px;
 }
-.blue_btn {
-    background-color: var(--bg-blue-light);
-    color: var(--contrast-secondary);
+
+/* Botões personalizados */
+button:active,
+button:focus {
+    outline: none;
+}
+.modal_btn {
+    padding: 10px 17.6px !important;
+}
+.button {
+    color: white;
     border: none;
     padding: 5px 10px;
     border-radius: 8px;
     cursor: pointer;
+}
+.button:active {
+    transform: scale(0.99);
+}
+.disabled_btn {
+    opacity: .65;
+    pointer-events: none;
+}
+.blue_btn {
+    background-color: var(--bg-blue-light);
 }
 .blue_btn:hover {
     background-color: #22558c;
@@ -43,9 +61,25 @@ body {
     background-color: #123f70;
     transform: scale(0.99);
 }
-.blue_btn:focus {
-    outline: none;
+.grey_btn {
+    background-color: #6c757d;
 }
+.grey_btn:hover {
+    background-color: #5a6268;
+}
+.grey_btn:active {
+    background-color: #484f53;
+}
+.red_btn {
+    background-color: #dd3333;
+}
+.red_btn:hover {
+    background-color: #c62e2e;
+}
+.red_btn:active {
+    background-color: #b12929;
+}
+/*  */
 
 /* Customização do scrollbar */
 ::-webkit-scrollbar {

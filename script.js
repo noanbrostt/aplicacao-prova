@@ -6,6 +6,8 @@ $(document).ready(function(){
         $('#conteudo').load('./views/views_usuario/prova.html');
     } else if (cookieExists('ultimaRota')) {
         $('#conteudo').load(`./views/views_admin/${getCookie('ultimaRota')}.html`);
+    } else if (cookieExists('usuario')) {
+        $('#conteudo').load(`./views/views_admin/habilitar_admin.html`);
     } else {
         $('#conteudo').load('./views/views_usuario/lista_provas.html');
     }
