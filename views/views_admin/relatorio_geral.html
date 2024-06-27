@@ -17,8 +17,16 @@
         display: flex;
         justify-content: space-evenly;
     }
+    .linha:has(.pesquisar_relatorio_geral) {
+        justify-content: end;
+        margin-block: 20px;
+    }
     .card {
-        width: 46%;
+        width: 40%;
+        max-width: 40%;
+    }
+    .card:has(input[type="date"]) {
+        height: 153px;
     }
     .card-header {
         background-color: var(--bg-blue);
@@ -31,7 +39,39 @@
     .card-body fieldset {
         display: flex;
         flex-direction: column;
+        justify-content: flex-end;
         width: 100%;
+    }
+    .custom-buttons {
+        display: flex;
+        justify-content: space-evenly;
+        gap: 5px;
+        padding: 5px;
+    }
+    .custom-buttons button {
+        width: 50%;
+    }
+    .select2-search--dropdown {
+        display: none;
+    }
+    #tabela_relatorio_geral_wrapper {
+        background: white;
+        padding: 10px;
+        border-radius: 8px;
+    }
+    #tabela_relatorio_geral {
+        width: 100% !important;
+    }
+    #tabela_relatorio_geral tr th,
+    #tabela_relatorio_geral tr td {
+        text-align: center;
+        padding-right: 30px;
+    }
+    #tabela_relatorio_geral tr th:nth-child(2),
+    #tabela_relatorio_geral tr td:nth-child(2),
+    #tabela_relatorio_geral tr th:nth-child(3),
+    #tabela_relatorio_geral tr td:nth-child(3) {
+        text-align: left;
     }
 </style>
 
@@ -39,48 +79,217 @@
 
 <main>
     <div class="linha">
-        <div class="card" style="max-width: 50%">
+        <div class="card">
             <div class="card-header">Data da Prova</div>
             <div class="card-body text-dark">
                 <fieldset>
-                    <label for="">Início</label>
-                    <input type="date" />
+                    <label for="data_inicio">Início</label>
+                    <input type="date" id="data_inicio" />
                 </fieldset>
                 <fieldset>
-                    <label for="">Fim</label>
-                    <input type="date" />
+                    <label for="data_fim">Fim</label>
+                    <input type="date" id="data_fim" />
                 </fieldset>
             </div>
         </div>
 
-        <div class="card" style="max-width: 50%">
+        <!-- <div class="card">
             <div class="card-header">Nome da Prova</div>
             <div class="card-body text-dark">
                 <fieldset>
-                    <select
-                        name="nomeProva"
-                        id="nomeProva"
-                        class="selectpicker"
-                    >
-                        <option value="1">arroz</option>
-                        <option value="2">feijao</option>
-                        <option value="3">batata</option>
-                        <option value="4">rocambole</option>
+                    <select id="nomeProva" multiple="multiple">
+                        <option value="1">Option 1</option>
+                        <option value="2">Option 2</option>
+                        <option value="3">Option 3</option>
                     </select>
                 </fieldset>
             </div>
-        </div>
+        </div> -->
     </div>
+
+    <div class="linha">
+        <button class="button blue_btn pesquisar_relatorio_geral">
+            Pesquisar
+        </button>
+    </div>
+
+    <table id="tabela_relatorio_geral" class="display compact">
+        <thead>
+            <tr>
+                <th>Matrícula</th>
+                <th>Nome</th>
+                <th>Prova</th>
+                <th>Questões</th>
+                <!-- <th>Acertos</th>
+                <th>Erros</th> -->
+                <th>Nota</th>
+                <th>Duração</th>
+                <th>Dia</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
 </main>
 
 <script>
-    $("#nomeProva").select2({
-        width: "100%",
-        search: true,
-        tag: false,
-        placeholder: "Todas selecionadas",
-        allowClear: true,
-        multiple: true,
-        clearButtontext: "Limpar Seleção",
+        // Cuida dos inputs de data
+    // Permite apenas períodos de até 60 dias
+    function atualizaPeriodo60Dias() {
+        const dataInicio = $("#data_inicio").val();
+        const dataFim = $("#data_fim").val();
+
+        if (dataInicio) {
+            const minDateFim = new Date(dataInicio);
+            const maxDateFim = new Date(minDateFim);
+            maxDateFim.setDate(maxDateFim.getDate() + 60);
+
+            $("#data_fim").attr("min", dataInicio);
+            $("#data_fim").attr("max", maxDateFim.toISOString().split("T")[0]);
+        } else {
+            $("#data_fim").removeAttr("min").removeAttr("max");
+        }
+
+        if (dataFim) {
+            const maxDateInicio = new Date(dataFim);
+            const minDateInicio = new Date(maxDateInicio);
+            minDateInicio.setDate(minDateInicio.getDate() - 60);
+
+            $("#data_inicio").attr("max", dataFim);
+            $("#data_inicio").attr(
+                "min",
+                minDateInicio.toISOString().split("T")[0]
+            );
+        } else {
+            $("#data_inicio").removeAttr("min").removeAttr("max");
+        }
+    }
+
+    $("#data_inicio, #data_fim").on("change", function () {
+        atualizaPeriodo60Dias();
     });
+
+    // Initialize with the default values
+    $("#data_inicio").val(
+        new Date(new Date().setDate(new Date().getDate() - 14))
+            .toISOString()
+            .split("T")[0]
+    );
+    $("#data_fim").val(new Date().toISOString().split("T")[0]);
+    atualizaPeriodo60Dias();
+
+
+    function addCustomDropdown() {
+        if (!$(".select2-dropdown .custom-content").length) {
+            const customContent = `
+                        <div class="custom-content">
+                            <div class="custom-buttons">
+                                <button id="selectAll" class="button blue_btn">Marcar todos</button>
+                                <button id="clearAll" class="button grey_btn">Limpar</button>
+                            </div>
+                        </div>`;
+            $(".select2-dropdown").prepend(customContent);
+        }
+    }
+
+    $("#nomeProva")
+        .select2({
+            placeholder: "Todas selecionadas",
+            dropdownCssClass: "tiny-drop",
+            liveSearch: true,
+            width: "100%",
+            dropdownParent: $("body"),
+        })
+        .on("select2:open", function () {
+            addCustomDropdown();
+
+            $(document)
+                .off("click", "#selectAll")
+                .on("click", "#selectAll", function (e) {
+                    e.stopPropagation();
+                    $("#nomeProva > option").prop("selected", "selected");
+                    $("#nomeProva").trigger("change");
+                });
+
+            $(document)
+                .off("click", "#clearAll")
+                .on("click", "#clearAll", function (e) {
+                    e.stopPropagation();
+                    $("#nomeProva > option").prop("selected", false);
+                    $("#nomeProva").trigger("change");
+                });
+        });
+
+    if (typeof tableRelatorioGeral == "undefined") {
+        let tableRelatorioGeral = $("#tabela_relatorio_geral").DataTable({
+            processing: true,
+            ajax: {
+                type: "GET",
+                url: `https://colombo.plansul.com.br/psi/prova-api/?acao=6`,
+                dataSrc: "",
+                data: {
+                    data_inicio: function () {
+                        return $("#data_inicio").val();
+                    },
+                    data_fim: function () {
+                        return $("#data_fim").val();
+                    },
+                },
+            },
+            columns: [
+                { data: "matricula" },
+                { data: "nome" },
+                { data: "nome_da_prova" },
+                { data: "qtde_questoes" },
+                // { data: "nu_acertos" },
+                // { data: "nu_erros" },
+                { data: "acertos" },
+                { data: "tempo_de_prova" },
+                { data: "dia_da_prova" },
+            ],
+            columnDefs: [
+                { width: "40%", targets: 1 },
+                { width: "20%", targets: 2 },
+            ],
+            bFilter: true,
+            aaSorting: [
+                [1, "asc"],
+                [6, "desc"],
+            ],
+            language: {
+                sProcessing: "Processando...",
+                sLengthMenu: "_MENU_",
+                sZeroRecords: "Nenhum resultado encontrado",
+                sEmptyTable: "Nenhum resultado encontrado",
+                sInfo: "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+                sInfoEmpty: "Mostrando de 0 até 0 de 0 registros",
+                sInfoFiltered: "(Filtrado de um total de _MAX_ registros)",
+                sInfoPostFix: "",
+                sSearch: "Buscar:",
+                sUrl: "",
+                sInfoThousands: ",",
+                sLoadingRecords: "Carregando...",
+                oPaginate: {
+                    sFirst: "Primeiro",
+                    sLast: "Último",
+                    sNext: "Próximo",
+                    sPrevious: "Anterior",
+                },
+                oAria: {
+                    sSortAscending:
+                        ": Ativar para ordenar a coluna de maneira ascendente",
+                    sSortDescending:
+                        ": Ativar para ordenar a coluna de maneira descendente",
+                },
+            },
+        });
+
+        tableRelatorioGeral.on("xhr", function () {
+            $(".pesquisar_relatorio_geral").removeClass("disabled_btn");
+        });
+
+        $(".pesquisar_relatorio_geral").on("click", function () {
+            $(".pesquisar_relatorio_geral").addClass("disabled_btn");
+            tableRelatorioGeral.ajax.reload();
+        });
+    }
 </script>

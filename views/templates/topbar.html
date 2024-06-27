@@ -2,7 +2,7 @@
     #topbar {
         width: 100%;
         height: var(--topbar-height);
-        background: var(--bg-blue);
+        background: linear-gradient(to right, var(--bg-blue) 40%, var(--bg-blue-200));
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -20,6 +20,7 @@
     }
     #usuario {
         color: var(--contrast-secondary);
+        filter: drop-shadow(0px 0px 2px black);
         font-size: 19px;
         font-weight: 600;
         display: flex;

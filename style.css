@@ -2,6 +2,8 @@
 
 :root {
     --bg-blue: #022954;
+    --bg-blue-400: #123f70;
+    --bg-blue-200: #22558c;
     --bg-blue-light: #336ba8;
     --bg-orange: #ff793c;
     --contrast-primary: #333333;
@@ -55,10 +57,10 @@ button:focus {
     background-color: var(--bg-blue-light);
 }
 .blue_btn:hover {
-    background-color: #22558c;
+    background-color: var(--bg-blue-200);
 }
 .blue_btn:active {
-    background-color: #123f70;
+    background-color: var(--bg-blue-400);
     transform: scale(0.99);
 }
 .grey_btn {
