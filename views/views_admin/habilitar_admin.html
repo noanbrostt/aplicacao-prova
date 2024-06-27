@@ -106,32 +106,7 @@
                 <th>Ação</th>
             </tr>
         </thead>
-        <tbody>
-            <!-- <tr>
-                <td>123036</td>
-                <td>Noan Caliel Brostt</td>
-                <td>25/06/2024</td>
-                <td>
-                    <box-icon name="trash" animation="tada-hover"></box-icon>
-                </td>
-            </tr>
-            <tr>
-                <td>742253</td>
-                <td>Noan Caliel Brostt</td>
-                <td>25/06/2024</td>
-                <td>
-                    <box-icon name="trash" animation="tada-hover"></box-icon>
-                </td>
-            </tr>
-            <tr>
-                <td>963246</td>
-                <td>Noan Caliel Brostt</td>
-                <td>25/06/2024</td>
-                <td>
-                    <box-icon name="trash" animation="tada-hover"></box-icon>
-                </td>
-            </tr> -->
-        </tbody>
+        <tbody></tbody>
     </table>
 </main>
 
@@ -201,33 +176,66 @@
                 return;
             }
 
-            // Simulando chamada Ajax
-            $(".nomeLoader").show();
+            $.ajax({
+                url: `https://colombo.plansul.com.br/psi/prova-api/?acao=9`,
+                data: {
+                    matricula: function () {
+                        return $("#matriculaAdicao").val();
+                    },
+                },
+                type: "GET",
+                dataType: "JSON",
+                beforeSend: function () {
+                    $(".nomeLoader").show();
+                },
+            })
+                .done(function (result) {
+                    if (result == "Matrícula não encontrada") {
+                        $(".nomeAdicao")
+                            .html("Matrícula não encontrada!")
+                            .show();
+                        return;
+                    }
 
-            setTimeout(() => {
-                $(".nomeLoader").hide();
-                $(".nomeAdicao")
-                    .html("Adicionar <b>Noan Caliel Brostt</b>?")
-                    .show();
-                $("#modalNovoUsuario .blue_btn").removeClass("disabled_btn");
-            }, 1200);
+                    $(".nomeAdicao")
+                        .html(
+                            `Adicionar <b>${capitalizeWords(
+                                result[0].nome
+                            )}</b>?`
+                        )
+                        .show();
+
+                    $("#modalNovoUsuario .blue_btn").removeClass(
+                        "disabled_btn"
+                    );
+                })
+                .fail(function (result) {
+                    triggerSweetAlertNotification("warning", "Erro: " + result);
+                })
+                .always(function (result) {
+                    $(".nomeLoader").hide();
+                });
         });
 
     if (typeof tableUsuarios == "undefined") {
         let tableUsuarios = $("#tabela_usuarios").DataTable({
             processing: true,
-            // ajax: {
-            //     type: "POST",
-            //     url: "data.php",
-            //     dataSrc: "",
-            // },
-            // columns: [
-            //     { data: "id" },
-            //     { data: "data" },
-            //     { data: "descricao" },
-            //     { data: "nome" },
-            //     { data: "ativo" },
-            // ],
+            ajax: {
+                type: "GET",
+                url: `https://colombo.plansul.com.br/psi/prova-api/?acao=7`,
+                dataSrc: "",
+            },
+            columns: [
+                { data: "co_matricula" },
+                { data: "nome" },
+                { data: "dt_cadastro" },
+                {
+                    data: null,
+                    render: function (data, type, row) {
+                        return `<box-icon name="trash" animation="tada-hover" onClick="deletaAdmin('${data.co_matricula}', '${data.nome}');"></box-icon>`;
+                    },
+                },
+            ],
             bFilter: true,
             aaSorting: [[1, "asc"]],
             language: {
@@ -258,11 +266,12 @@
             },
         });
 
-        $('box-icon[name="trash"]').on("click", function () {
-            let usuario = tableUsuarios.row($(this).parent().parent()).data();
+        function deletaAdmin(matricula, nome) {
 
             Swal.fire({
-                title: `Deseja retirar ${usuario[1]} como Admin?`,
+                title: `Deseja retirar ${capitalizeWords(
+                    nome
+                )} como Admin?`,
                 icon: "question",
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",
@@ -271,13 +280,58 @@
                 cancelButtonText: "Não",
             }).then((result) => {
                 if (result.isConfirmed) {
-                    triggerSweetAlertNotification(
-                        "info",
-                        `${usuario[1]} não é mais Admin!`
-                    );
-                    // tableUsuarios.ajax.reload();
+                    $.ajax({
+                        url: `https://colombo.plansul.com.br/psi/prova-api/?acao=8&co_matricula=${matricula}`,
+                        type: "POST",
+                    })
+                        .done(function (result) {
+                            triggerSweetAlertNotification(
+                                "info",
+                                `${capitalizeWords(
+                                    nome
+                                )} não é mais Admin!`
+                            );
+                            tableUsuarios.ajax.reload();
+                        })
+                        .fail(function (result) {
+                            triggerSweetAlertNotification(
+                                "warning",
+                                "Erro: " + result
+                            );
+                        });
                 }
             });
+        }
+
+        $("#modalNovoUsuario .blue_btn").on("click", function () {
+            $.ajax({
+                url: `https://colombo.plansul.com.br/psi/prova-api/?acao=10`,
+                data: {
+                    co_matricula: function () {
+                        return $("#matriculaAdicao").val();
+                    },
+                    nome: function () {
+                        return $(".nomeAdicao b").html();
+                    },
+                },
+                type: "POST",
+                dataSrc: "",
+                beforeSend: function () {
+                    $("#modalNovoUsuario .blue_btn").addClass("disabled_btn");
+                },
+            })
+                .done(function (result) {
+                    $("#modalNovoUsuario .red_btn").click();
+
+                    tableUsuarios.ajax.reload();
+
+                    $(".nomeAdicao").html(``).hide();
+                })
+                .fail(function (result) {
+                    triggerSweetAlertNotification("warning", "Erro: " + result);
+                })
+                .always(function (result) {
+                });
         });
     }
 </script>

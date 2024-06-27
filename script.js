@@ -6,7 +6,7 @@ $(document).ready(function(){
         $('#conteudo').load('./views/views_usuario/prova.html');
     } else if (cookieExists('ultimaRota')) {
         $('#conteudo').load(`./views/views_admin/${getCookie('ultimaRota')}.html`);
-    } else if (cookieExists('usuario')) {
+    } else if (getCookie('usuario') == 'admin') {
         $('#conteudo').load(`./views/views_admin/habilitar_admin.html`);
     } else {
         $('#conteudo').load('./views/views_usuario/lista_provas.html');
@@ -116,6 +116,12 @@ function cookieExists(cookieName) {
 // Função para deletar um cookie
 function deleteCookie(cookieName) {
     document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+}
+
+function capitalizeWords(str) {
+    return str.toLowerCase().replace(/\b\w/g, function(char) {
+        return char.toUpperCase();
+    });
 }
 
 function convertToCamelCase(name) {

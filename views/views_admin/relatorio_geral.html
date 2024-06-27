@@ -73,6 +73,9 @@
     #tabela_relatorio_geral tr td:nth-child(3) {
         text-align: left;
     }
+    .dt-layout-row.dt-layout-table {
+        overflow-x: auto;
+    }
 </style>
 
 <h2>Relatório Geral</h2>
@@ -120,8 +123,8 @@
                 <th>Nome</th>
                 <th>Prova</th>
                 <th>Questões</th>
-                <!-- <th>Acertos</th>
-                <th>Erros</th> -->
+                <th>Acertos</th>
+                <th>Erros</th>
                 <th>Nota</th>
                 <th>Duração</th>
                 <th>Dia</th>
@@ -240,16 +243,16 @@
                 { data: "nome" },
                 { data: "nome_da_prova" },
                 { data: "qtde_questoes" },
-                // { data: "nu_acertos" },
-                // { data: "nu_erros" },
+                { data: "nu_acertos" },
+                { data: "nu_erros" },
                 { data: "acertos" },
                 { data: "tempo_de_prova" },
                 { data: "dia_da_prova" },
             ],
             columnDefs: [
-                { width: "40%", targets: 1 },
-                { width: "20%", targets: 2 },
+                { width: "30%", targets: 1 },
             ],
+            autoWidth: false,
             bFilter: true,
             aaSorting: [
                 [1, "asc"],

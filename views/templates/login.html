@@ -162,6 +162,7 @@
 <script>
     // Variável para armazenar a sequência de teclas digitadas
     typedKeys = "";
+    carregando = false;
 
     // Input Masks
     $("#matricula").mask("000000");
@@ -212,6 +213,10 @@
                 url: `https://colombo.plansul.com.br/psi/prova-api/?acao=1&matricula=${matricula}&cpf=${cpf}`,
                 type: "GET",
                 dataType: "JSON",
+                beforeSend: function () {
+                    $(".entrar").addClass("disabled_btn");
+                    carregando = true;
+                },
             })
                 .done(function (result) {
                     if (result[0] == "Erro") {
@@ -236,7 +241,7 @@
                         $("#usuario span").html("Olá, " + camelCaseName);
 
                         // Permissão de Admin
-                        if (camelCaseName == "Noan Brostt") {
+                        if (result[0].ic_status == '1') {
                             setCookie("usuario", "admin", 30);
                             $("#sidebar").load(
                                 "./views/templates/sidebar.html"
@@ -247,15 +252,19 @@
                             return;
                         } else {
                             $("#sidebar").html("");
+                            $("#conteudo").load(
+                                "./views/views_usuario/lista_provas.html"
+                            );
                         }
 
-                        $("#conteudo").load(
-                            "./views/views_usuario/lista_provas.html"
-                        );
                     }
                 })
                 .fail(function (result) {
                     triggerSweetAlertNotification("warning", "Erro: " + result);
+                })
+                .always(function (result) {
+                    $(".entrar").removeClass("disabled_btn");
+                    carregando = false;
                 });
         });
 
@@ -270,7 +279,7 @@
             if (code == 13) {
                 if ($(this).attr("id") == "matricula") {
                     $("#cpf").focus();
-                } else if ($(this).attr("id") == "cpf") {
+                } else if ($(this).attr("id") == "cpf" && !carregando) {
                     $(".entrar").click();
                 }
             }
