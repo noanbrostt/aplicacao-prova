@@ -114,7 +114,7 @@
     var matricula = getCookie('matricula');
 
     $.ajax({
-      url: `https://colombo.plansul.com.br/psi/prova-api/?acao=2&matricula=${matricula}`,
+      url: `${urlApi}?acao=2&matricula=${matricula}`,
       type: 'GET',
       dataType: 'JSON'
     })

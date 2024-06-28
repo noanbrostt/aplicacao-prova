@@ -1,5 +1,11 @@
 $(document).ready(function(){
 
+    if (window.location.href.includes("10.98.32.42")) {
+        urlApi = 'http://10.98.32.42/psi/prova-api/';
+    } else {
+        urlApi = 'https://colombo.plansul.com.br/psi/prova-api/';
+    }
+
     if (!cookieExists('matricula')) {
         $('#conteudo').load('./views/templates/login.html');
     } else if (cookieExists('provaId')) {
@@ -12,7 +18,7 @@ $(document).ready(function(){
         $('#conteudo').load('./views/views_usuario/lista_provas.html');
     }
 
-    // dificultarInspecionarElemento();
+    dificultarInspecionarElemento();
 });
 
 // Chama uma notificação no canto superior direito que dura 2 segundos

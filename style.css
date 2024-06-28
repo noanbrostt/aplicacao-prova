@@ -13,7 +13,7 @@
     --sidebar-width: 77px;
 }
 :root:has(#sidebar.active) {
-    --sidebar-width: 210px;
+    --sidebar-width: 190px;
 }
 * {
     margin: 0;

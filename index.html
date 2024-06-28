@@ -41,8 +41,7 @@
             $("#topbar").load("./views/templates/topbar.html");
 
             // Permissão de Admin
-            if (getFirstAndLastCamelCase(getCookie('nome')) == "Noan Brostt") {
-                setCookie('usuario', 'admin', 30);
+            if (getCookie('usuario') == 'admin') {
                 $("#sidebar").load("./views/templates/sidebar.html");
             } else {
                 $("#sidebar").html("");

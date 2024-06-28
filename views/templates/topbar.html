@@ -2,7 +2,11 @@
     #topbar {
         width: 100%;
         height: var(--topbar-height);
-        background: linear-gradient(to right, var(--bg-blue) 40%, var(--bg-blue-200));
+        background: linear-gradient(
+            to right,
+            var(--bg-blue) 40%,
+            var(--bg-blue-200)
+        );
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -39,7 +43,7 @@
 <div id="logo"><img src="./assets/img/logo.png" alt="Logo" /></div>
 
 <div id="usuario">
-    <span>Olá, Noan Brostt</span>
+    <span>Olá</span>
     <box-icon
         name="log-out"
         animation="tada-hover"
@@ -49,6 +53,11 @@
 <!-- </header> -->
 
 <script>
+    // Preenche nome do usuário ao carregar
+    const fullName = getCookie("nome");
+    const camelCaseName = getFirstAndLastCamelCase(fullName);
+    $("#usuario span").html("Olá, " + camelCaseName);
+
     // Função de Logoff
     $("#usuario box-icon")
         .off("click")
@@ -68,8 +77,8 @@
                     deleteCookie("provaId");
                     deleteCookie("provaNome");
                     deleteCookie("nome");
-                    deleteCookie("filial");
-                    deleteCookie("co_funcao");
+                    // deleteCookie("filial");
+                    // deleteCookie("co_funcao");
                     deleteCookie("provaInicio");
                     deleteCookie("ultimaRota");
                     deleteCookie("usuario");

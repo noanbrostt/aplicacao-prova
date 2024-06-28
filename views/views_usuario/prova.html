@@ -99,7 +99,7 @@
     $('main > h2').html('Prova de '+provaNome);
 
     $.ajax({
-      url: `https://colombo.plansul.com.br/psi/prova-api/?acao=3&prova=${provaId}`,
+      url: `${urlApi}?acao=3&prova=${provaId}`,
       type: 'GET',
       dataType: 'JSON'
     })
@@ -156,7 +156,7 @@
           ajaxCounter++;
 
           $.ajax({
-            url: `https://colombo.plansul.com.br/psi/prova-api/?acao=4&co_prova=${co_prova}&co_pergunta=${co_pergunta}&co_alternativa=${co_alternativa}&co_matricula=${co_matricula}&dh_resposta=${dh_resposta}`,
+            url: `${urlApi}?acao=4&co_prova=${co_prova}&co_pergunta=${co_pergunta}&co_alternativa=${co_alternativa}&co_matricula=${co_matricula}&dh_resposta=${dh_resposta}`,
             type: 'POST'
           })
           .done(function(result) {
@@ -165,7 +165,7 @@
             if (ajaxCounter == 0) {
 
               $.ajax({
-                url: `https://colombo.plansul.com.br/psi/prova-api/?acao=5&matricula=${co_matricula}`,
+                url: `${urlApi}?acao=5&matricula=${co_matricula}`,
                 type: 'POST'
               })
               .done(function(result) {

@@ -94,7 +94,7 @@
         data-toggle="modal"
         data-target="#modalNovoUsuario"
     >
-        Adicionar novo usuário
+        Adicionar novo administrador
     </button>
 
     <table id="tabela_usuarios" class="display compact">
@@ -166,6 +166,10 @@
 </div>
 
 <script>
+    $('.novo_usuario').on('click', function() {
+        setTimeout(function() { $('#matriculaAdicao').focus() }, 500);
+    });
+
     $("#matriculaAdicao")
         .off("input")
         .mask("000000")
@@ -176,8 +180,9 @@
                 return;
             }
 
+            // Busca o nome da matricula fornecida
             $.ajax({
-                url: `https://colombo.plansul.com.br/psi/prova-api/?acao=9`,
+                url: `${urlApi}?acao=9`,
                 data: {
                     matricula: function () {
                         return $("#matriculaAdicao").val();
@@ -222,7 +227,7 @@
             processing: true,
             ajax: {
                 type: "GET",
-                url: `https://colombo.plansul.com.br/psi/prova-api/?acao=7`,
+                url: `${urlApi}?acao=7`,
                 dataSrc: "",
             },
             columns: [
@@ -281,7 +286,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: `https://colombo.plansul.com.br/psi/prova-api/?acao=8&co_matricula=${matricula}`,
+                        url: `${urlApi}?acao=8&co_matricula=${matricula}`,
                         type: "POST",
                     })
                         .done(function (result) {
@@ -305,7 +310,7 @@
 
         $("#modalNovoUsuario .blue_btn").on("click", function () {
             $.ajax({
-                url: `https://colombo.plansul.com.br/psi/prova-api/?acao=10`,
+                url: `${urlApi}?acao=10`,
                 data: {
                     co_matricula: function () {
                         return $("#matriculaAdicao").val();
@@ -321,11 +326,11 @@
                 },
             })
                 .done(function (result) {
+                    $("#matriculaAdicao").val('');
+                    $(".nomeAdicao").html(``).hide();
                     $("#modalNovoUsuario .red_btn").click();
 
                     tableUsuarios.ajax.reload();
-
-                    $(".nomeAdicao").html(``).hide();
                 })
                 .fail(function (result) {
                     triggerSweetAlertNotification("warning", "Erro: " + result);

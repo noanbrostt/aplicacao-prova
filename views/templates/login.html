@@ -210,7 +210,7 @@
 
             // Caso todos os campos sejam validados
             $.ajax({
-                url: `https://colombo.plansul.com.br/psi/prova-api/?acao=1&matricula=${matricula}&cpf=${cpf}`,
+                url: `${urlApi}?acao=1&matricula=${matricula}&cpf=${cpf}`,
                 type: "GET",
                 dataType: "JSON",
                 beforeSend: function () {
@@ -231,8 +231,8 @@
                         setCookie("matricula", matricula, 30);
                         setCookie("cpf", cpf), 30;
                         setCookie("nome", result[0].nome, 30);
-                        setCookie("filial", result[0].filial, 30);
-                        setCookie("co_funcao", result[0].co_funcao, 30);
+                        // setCookie("filial", result[0].filial, 30);
+                        // setCookie("co_funcao", result[0].co_funcao, 30);
 
                         // Preenche nome do usuário ao carregar
                         const fullName = getCookie("nome");
@@ -241,7 +241,7 @@
                         $("#usuario span").html("Olá, " + camelCaseName);
 
                         // Permissão de Admin
-                        if (result[0].ic_status == '1') {
+                        if (result[0].ic_status == "1") {
                             setCookie("usuario", "admin", 30);
                             $("#sidebar").load(
                                 "./views/templates/sidebar.html"
@@ -256,7 +256,6 @@
                                 "./views/views_usuario/lista_provas.html"
                             );
                         }
-
                     }
                 })
                 .fail(function (result) {
