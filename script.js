@@ -18,7 +18,7 @@ $(document).ready(function(){
         $('#conteudo').load('./views/views_usuario/lista_provas.html');
     }
 
-    dificultarInspecionarElemento();
+    // dificultarInspecionarElemento();
 });
 
 // Chama uma notificação no canto superior direito que dura 2 segundos
