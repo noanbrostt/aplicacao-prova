@@ -2,10 +2,12 @@
     #conteudo {
         padding: 20px;
     }
+
     h2 {
         width: 96%;
         margin: 10px auto 20px;
     }
+
     main {
         background-color: #02295421;
         width: 96%;
@@ -13,88 +15,108 @@
         border-radius: 12px;
         padding: 16px;
     }
+
     .linha {
         display: flex;
         justify-content: space-evenly;
     }
+
     .linha:has(.pesquisar_relatorio_geral) {
         justify-content: end;
         margin-block: 20px;
     }
+
     .card {
         width: 40%;
         max-width: 40%;
     }
+
     .card:has(input[type="date"]) {
         height: 153px;
     }
+
     .card-header {
         background-color: var(--bg-blue);
         color: white;
     }
+
     .card-body {
         display: flex;
         gap: 20px;
     }
+
     .card-body fieldset {
         display: flex;
         flex-direction: column;
         justify-content: flex-end;
         width: 100%;
     }
+
     .custom-buttons {
         display: flex;
         justify-content: space-evenly;
         gap: 5px;
         padding: 5px;
     }
+
     .custom-buttons button {
         width: 50%;
     }
+
     .select2-search--dropdown {
         display: none;
     }
+
     #tabela_relatorio_geral_wrapper {
         background: white;
         padding: 10px;
         border-radius: 8px;
     }
+
     #tabela_relatorio_geral {
         width: 100% !important;
     }
+
     #tabela_relatorio_geral tr th,
     #tabela_relatorio_geral tr td {
         text-align: center;
         /* padding-right: 30px; */
     }
+
     #tabela_relatorio_geral tr th:nth-child(2),
     #tabela_relatorio_geral tr td:nth-child(2),
     #tabela_relatorio_geral tr th:nth-child(3),
     #tabela_relatorio_geral tr td:nth-child(3) {
         text-align: left;
     }
+
     .dt-layout-row.dt-layout-table {
         overflow-x: auto;
     }
+
     box-icon {
         cursor: pointer;
     }
 
     /* Prova */
+    #modalProva .modal-body {
+        gap: 20px;
+        display: flex;
+        flex-direction: column;
+    }
+    #modalProva .modal-footer {
+        justify-content: center
+    }
     .questao {
         display: flex;
         flex-direction: column;
-        padding: 18px;
+        padding: 16px;
         border-radius: 10px;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
         width: 100%;
         background-color: #fff;
         text-align: justify;
-    }
-    .questao:has(input[type="radio"]:checked) {
-        /* background-color: #42ff425c; */
-        border: 2px solid var(--bg-blue);
-        padding: 16px;
+        pointer-events: none;
     }
     .questao input {
         display: none;
@@ -121,17 +143,59 @@
         cursor: pointer;
         border: 1px solid rgba(187, 187, 187, 0.164);
     }
-    .questao label:hover {
-        background-color: rgba(24, 24, 24, 0.13);
-        border: 1px solid #bbb;
+    .questao:has(label.correto) {
+        border: 4px solid #42ff425c;
     }
-    .questao input[type="radio"]:checked + label {
-        background-color: rgb(24 24 24 / 18%);
-        border: 2px solid var(--bg-blue);
-        color: var(--bg-blue);
-        padding: 13px;
+    .questao:has(label.errado) {
+        border: 4px solid #ff42425c;
+    }
+    .questao label.correto {
+        background-color: #42ff425c; 
+    }
+    .questao label.errado {
+        background-color: #ff42425c; 
     }
     /*  */
+
+    .questaoLoader {
+        width: 100%;
+        height: 250px;
+        background: linear-gradient(
+            90deg,
+            #e0e0e0 25%,
+            #c0c0c0 50%,
+            #e0e0e0 75%
+        );
+        background-size: 200% 100%;
+        animation: loading 1.5s infinite;
+        border-radius: 5px;
+        margin-inline: auto;
+        margin-top: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        gap: 8px;
+        padding: 16px;
+    }
+    .questaoLoader .alternativaLoader {
+        width: 100%;
+        background: linear-gradient(
+            90deg,
+            #c0c0c0 25%,
+            #e0e0e0 50%,
+            #c0c0c0 75%
+        );
+        height: 50px;
+        border-radius: 10px;
+    }
+    @keyframes loading {
+        0% {
+            background-position: 200% 0;
+        }
+        100% {
+            background-position: -200% 0;
+        }
+    }
 </style>
 
 <h2>Relatório Geral</h2>
@@ -192,108 +256,82 @@
 </main>
 
 <!-- Modal mostrar prova -->
-<div
-    class="modal fade"
-    id="modalProva"
-    tabindex="-1"
-    role="dialog"
-    aria-labelledby="modalProvaTitle"
-    aria-hidden="true"
->
+<div class="modal fade" id="modalProva" tabindex="-1" role="dialog" aria-labelledby="modalProvaTitle"
+    aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">
+                <h5 class="modal-title" id="modalProvaTitle">
                     Prova de SAC_Geral de Noan
                 </h5>
-                <button
-                    type="button"
-                    class="close"
-                    data-dismiss="modal"
-                    aria-label="Close"
-                >
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
+                <div class="questaoLoader">
+                    <div class="alternativaLoader"></div>
+                    <div class="alternativaLoader"></div>
+                    <div class="alternativaLoader"></div>
+                </div>
                 <div class="questao">
                     <div class="info">
-                        <span class="question"
-                            >1. What does CSS stand for?</span
-                        >
+                        <span class="question">1. What does CSS stand for?</span>
+                    </div>
+                    <input type="radio" id="1-a" name="1" value="a" />
+                    <label for="1-a" class="correto">a) Computer Style Sheets</label>
+                    <input type="radio" id="1-b" name="1" value="b" />
+                    <label for="1-b" class="errado">b) Cascading Style Sheets</label>
+                    <input type="radio" id="1-c" name="1" value="c" />
+                    <label for="1-c">c) Creative Style Sheets</label>
+                </div>
+                <!-- <div class="questao">
+                    <div class="info">
+                        <span class="question">1. What does CSS stand for?</span>
                     </div>
                     <input type="radio" id="1-a" name="1" value="a" />
                     <label for="1-a">a) Computer Style Sheets</label>
                     <input type="radio" id="1-b" name="1" value="b" />
                     <label for="1-b">b) Cascading Style Sheets</label>
                     <input type="radio" id="1-c" name="1" value="c" />
-                    <label for="1-c">c) Creative Style Sheets</label>
+                    <label for="1-c" class="correto">c) Creative Style Sheets</label>
                 </div>
                 <div class="questao">
                     <div class="info">
-                        <span class="question"
-                            >1. What does CSS stand for?</span
-                        >
+                        <span class="question">1. What does CSS stand for?</span>
+                    </div>
+                    <input type="radio" id="1-a" name="1" value="a" />
+                    <label for="1-a" class="correto">a) Computer Style Sheets</label>
+                    <input type="radio" id="1-b" name="1" value="b" />
+                    <label for="1-b">b) Cascading Style Sheets</label>
+                    <input type="radio" id="1-c" name="1" value="c" />
+                    <label for="1-c" class="errado">c) Creative Style Sheets</label>
+                </div>
+                <div class="questao">
+                    <div class="info">
+                        <span class="question">1. What does CSS stand for?</span>
                     </div>
                     <input type="radio" id="1-a" name="1" value="a" />
                     <label for="1-a">a) Computer Style Sheets</label>
                     <input type="radio" id="1-b" name="1" value="b" />
-                    <label for="1-b">b) Cascading Style Sheets</label>
+                    <label for="1-b" class="correto">b) Cascading Style Sheets</label>
                     <input type="radio" id="1-c" name="1" value="c" />
                     <label for="1-c">c) Creative Style Sheets</label>
                 </div>
                 <div class="questao">
                     <div class="info">
-                        <span class="question"
-                            >1. What does CSS stand for?</span
-                        >
+                        <span class="question">1. What does CSS stand for?</span>
                     </div>
                     <input type="radio" id="1-a" name="1" value="a" />
-                    <label for="1-a">a) Computer Style Sheets</label>
+                    <label for="1-a" class="correto">a) Computer Style Sheets</label>
                     <input type="radio" id="1-b" name="1" value="b" />
                     <label for="1-b">b) Cascading Style Sheets</label>
                     <input type="radio" id="1-c" name="1" value="c" />
                     <label for="1-c">c) Creative Style Sheets</label>
-                </div>
-                <div class="questao">
-                    <div class="info">
-                        <span class="question"
-                            >1. What does CSS stand for?</span
-                        >
-                    </div>
-                    <input type="radio" id="1-a" name="1" value="a" />
-                    <label for="1-a">a) Computer Style Sheets</label>
-                    <input type="radio" id="1-b" name="1" value="b" />
-                    <label for="1-b">b) Cascading Style Sheets</label>
-                    <input type="radio" id="1-c" name="1" value="c" />
-                    <label for="1-c">c) Creative Style Sheets</label>
-                </div>
-                <div class="questao">
-                    <div class="info">
-                        <span class="question"
-                            >1. What does CSS stand for?</span
-                        >
-                    </div>
-                    <input type="radio" id="1-a" name="1" value="a" />
-                    <label for="1-a">a) Computer Style Sheets</label>
-                    <input type="radio" id="1-b" name="1" value="b" />
-                    <label for="1-b">b) Cascading Style Sheets</label>
-                    <input type="radio" id="1-c" name="1" value="c" />
-                    <label for="1-c">c) Creative Style Sheets</label>
-                </div>
+                </div> -->
             </div>
             <div class="modal-footer">
-                <button
-                    type="button"
-                    class="button modal_btn blue_btn disabled_btn"
-                >
-                    Adicionar
-                </button>
-                <button
-                    type="button"
-                    class="button modal_btn red_btn"
-                    data-dismiss="modal"
-                >
+                <button type="button" class="button modal_btn red_btn" data-dismiss="modal">
                     Voltar
                 </button>
             </div>
@@ -417,7 +455,7 @@
                 {
                     data: null,
                     render: function (data, type, row) {
-                        return `<box-icon name="file-find" animation="tada-hover" onClick="visualizaProva('${data.matricula}', '${data.nome_da_prova}');"></box-icon>`;
+                        return `<box-icon name="file-find" animation="tada-hover" onClick="visualizaProva('${data.matricula}', '${data.nome}', '${data.nome_da_prova}');"></box-icon>`;
                     },
                 },
             ],
@@ -466,9 +504,30 @@
         });
     }
 
-    function visualizaProva(matricula, nome_da_prova) {
-        // window.open(url, '_blank');
+    function visualizaProva(matricula, nome, nome_da_prova) {
+        // Busca o nome da matricula fornecida
+        $.ajax({
+                url: `${urlApi}?acao=11`,
+                data: {
+                    matricula: matricula,
+                    nome_da_prova: nome_da_prova
+                },
+                type: "GET",
+                dataType: "JSON",
+                beforeSend: function () {
+                    $("#modalProva").modal("show");
+                    $('#modalProvaTitle').html(`Prova de ${nome_da_prova} de ${getFirstAndLastCamelCase(nome)}.`);
+                    $(".questaoLoader").show();
+                },
+            })
+            .done(function (result) {
 
-        $("#modalProva").modal("show");
+            })
+            .fail(function (result) {
+                triggerSweetAlertNotification("warning", "Erro: " + result);
+            })
+            .always(function (result) {
+                $(".questaoLoader").hide();
+            });
     }
 </script>

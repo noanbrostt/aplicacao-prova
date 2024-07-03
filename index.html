@@ -19,7 +19,7 @@
             <!-- "./views/templates/topbar.html" -->
         </header>
 
-        <nav id="sidebar" class="active">
+        <nav id="sidebar">
             <!-- "./views/templates/sidebar.html" -->
         </nav>
 
@@ -43,6 +43,16 @@
             // Permissão de Admin
             if (getCookie('usuario') == 'admin') {
                 $("#sidebar").load("./views/templates/sidebar.html");
+                
+                setInterval(() => {       
+                    if (getCookie('sidebarActive') == 'true') {
+                        $("#sidebar").addClass("active");
+                        $("input#sidebar_checkbox").attr('checked', true);
+                    } else {
+                        $("input#sidebar_checkbox").attr('checked', false);
+                    }
+                }, 20);
+
             } else {
                 $("#sidebar").html("");
             }

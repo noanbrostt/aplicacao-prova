@@ -218,8 +218,10 @@
     $("#sidebar_checkbox").on("change", function () {
         if ($("input#sidebar_checkbox").is(":checked")) {
             $("#sidebar").addClass("active");
+            setCookie("sidebarActive", true, 30);
         } else {
             $("#sidebar").removeClass("active");
+            setCookie("sidebarActive", false, 30);
         }
     });
 
