@@ -99,6 +99,9 @@
     }
 
     /* Prova */
+    #modalProva .modal-dialog {
+        max-width: 80%;
+    }
     #modalProva .modal-body {
         gap: 20px;
         display: flex;
@@ -150,13 +153,36 @@
         border: 4px solid #ff42425c;
     }
     .questao label.correto {
-        background-color: #42ff425c; 
+        background-color: #42ff425c;
+    }
+    .questao:not(:has(label.errado)) label.correto:before {
+        content: '\2714'; /* Código Unicode para o checkmark */
+        color: green; /* Cor verde para a resposta correta */
+        margin-right: 5px; /* Espaçamento entre o ícone e o texto */
+        font-size: 30px;
+        position: absolute;
+        left: 28px;
+        margin-top: -33px;
+        rotate: -5deg;
+    }
+    .questao:has(label.correto) label.errado:before {
+        content: '\2718'; /* Código Unicode para o X */
+        color: red; /* Cor vermelha para as respostas incorretas */
+        margin-right: 5px; /* Espaçamento entre o ícone e o texto */
+        font-size: 30px;
+        position: absolute;
+        left: 28px;
+        margin-top: -33px;
+        rotate: -10deg;
     }
     .questao label.errado {
         background-color: #ff42425c; 
     }
     /*  */
 
+    #imprimirProvaFeita {
+        display: contents;
+    }
     .questaoLoader {
         width: 100%;
         height: 250px;
@@ -262,73 +288,22 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="modalProvaTitle">
-                    Prova de SAC_Geral de Noan
+                    <!-- Prova de SAC_Geral de Noan -->
                 </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
+
                 <div class="questaoLoader">
                     <div class="alternativaLoader"></div>
                     <div class="alternativaLoader"></div>
                     <div class="alternativaLoader"></div>
                 </div>
-                <div class="questao">
-                    <div class="info">
-                        <span class="question">1. What does CSS stand for?</span>
-                    </div>
-                    <input type="radio" id="1-a" name="1" value="a" />
-                    <label for="1-a" class="correto">a) Computer Style Sheets</label>
-                    <input type="radio" id="1-b" name="1" value="b" />
-                    <label for="1-b" class="errado">b) Cascading Style Sheets</label>
-                    <input type="radio" id="1-c" name="1" value="c" />
-                    <label for="1-c">c) Creative Style Sheets</label>
-                </div>
-                <!-- <div class="questao">
-                    <div class="info">
-                        <span class="question">1. What does CSS stand for?</span>
-                    </div>
-                    <input type="radio" id="1-a" name="1" value="a" />
-                    <label for="1-a">a) Computer Style Sheets</label>
-                    <input type="radio" id="1-b" name="1" value="b" />
-                    <label for="1-b">b) Cascading Style Sheets</label>
-                    <input type="radio" id="1-c" name="1" value="c" />
-                    <label for="1-c" class="correto">c) Creative Style Sheets</label>
-                </div>
-                <div class="questao">
-                    <div class="info">
-                        <span class="question">1. What does CSS stand for?</span>
-                    </div>
-                    <input type="radio" id="1-a" name="1" value="a" />
-                    <label for="1-a" class="correto">a) Computer Style Sheets</label>
-                    <input type="radio" id="1-b" name="1" value="b" />
-                    <label for="1-b">b) Cascading Style Sheets</label>
-                    <input type="radio" id="1-c" name="1" value="c" />
-                    <label for="1-c" class="errado">c) Creative Style Sheets</label>
-                </div>
-                <div class="questao">
-                    <div class="info">
-                        <span class="question">1. What does CSS stand for?</span>
-                    </div>
-                    <input type="radio" id="1-a" name="1" value="a" />
-                    <label for="1-a">a) Computer Style Sheets</label>
-                    <input type="radio" id="1-b" name="1" value="b" />
-                    <label for="1-b" class="correto">b) Cascading Style Sheets</label>
-                    <input type="radio" id="1-c" name="1" value="c" />
-                    <label for="1-c">c) Creative Style Sheets</label>
-                </div>
-                <div class="questao">
-                    <div class="info">
-                        <span class="question">1. What does CSS stand for?</span>
-                    </div>
-                    <input type="radio" id="1-a" name="1" value="a" />
-                    <label for="1-a" class="correto">a) Computer Style Sheets</label>
-                    <input type="radio" id="1-b" name="1" value="b" />
-                    <label for="1-b">b) Cascading Style Sheets</label>
-                    <input type="radio" id="1-c" name="1" value="c" />
-                    <label for="1-c">c) Creative Style Sheets</label>
-                </div> -->
+
+                <div id="imprimirProvaFeita"></div>
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="button modal_btn red_btn" data-dismiss="modal">
@@ -428,6 +403,11 @@
 
     if (typeof tableRelatorioGeral == "undefined") {
         let tableRelatorioGeral = $("#tabela_relatorio_geral").DataTable({
+            // dom: 'Bfrtip', // Botões - B for Buttons, f para pesquisa, r para limpar, t para tabela e i para informações da tabela
+            // buttons: [
+            //     'excelHtml5' // Botão de exportação para Excel
+            // ],
+            // lengthMenu: [ [10, 25, 50, -1], [ '10 por página', '25 por página', '50 por página', 'Mostrar todos' ] ],
             processing: true,
             ajax: {
                 type: "GET",
@@ -509,12 +489,13 @@
         $.ajax({
                 url: `${urlApi}?acao=11`,
                 data: {
-                    matricula: matricula,
+                    co_matricula: matricula,
                     nome_da_prova: nome_da_prova
                 },
                 type: "GET",
                 dataType: "JSON",
                 beforeSend: function () {
+                    $('#imprimirProvaFeita').html('');
                     $("#modalProva").modal("show");
                     $('#modalProvaTitle').html(`Prova de ${nome_da_prova} de ${getFirstAndLastCamelCase(nome)}.`);
                     $(".questaoLoader").show();
@@ -522,6 +503,22 @@
             })
             .done(function (result) {
 
+                let countQuestoes = 1;
+
+                result.forEach(questao => {
+                    let questaoMontada = construirQuestao(questao, countQuestoes);
+                    $('#imprimirProvaFeita').append(questaoMontada);
+
+                    if (questao.acertou == '1') {
+                        $('#'+countQuestoes+'-'+questao.resposta_escolhida.toLowerCase() +' + label').addClass('correto');
+                    } else {
+                        $('#'+countQuestoes+'-'+questao.resposta_escolhida.toLowerCase() +' + label').addClass('errado');
+                        $('#'+countQuestoes+'-'+questao.resposta_correta.toLowerCase() +' + label').addClass('correto');
+                    }
+
+                    countQuestoes++;
+                });
+                
             })
             .fail(function (result) {
                 triggerSweetAlertNotification("warning", "Erro: " + result);
