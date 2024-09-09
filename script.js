@@ -171,3 +171,33 @@ function utf8ToBase64(str) {
 function base64ToUtf8(base64) {
     return decodeURIComponent(escape(atob(base64)));
 }
+
+function construirQuestao(questao, numeroQuestao) {
+    // Expressão regular para identificar números romanos
+    let regex = /\b([IVXLCDMivxlcdm]+)\./g;
+    // Função para substituir os números romanos por eles mesmos com <br> antes
+    let novoTexto = questao.de_pergunta.replace(regex, '<br>$1.');
+
+    let letra = 'a';
+    let questaoHTML = `
+      <div class="questao">
+        <div class="info">
+          <span class="question" co_questao="${questao.co_pergunta}">${numeroQuestao}. ${novoTexto}</span>
+        </div>`;
+
+    questao.alternativas.split(';.;').forEach(alternativaComCodigo => {
+      let alternativa = alternativaComCodigo.split(':-D');
+
+      questaoHTML += `
+        <input type="radio" id="${numeroQuestao}-${letra}" name="${numeroQuestao}" value="${letra}" co_alternativa="${alternativa[0]}" />
+        <label for="${numeroQuestao}-${letra}">${letra}) ${alternativa[1]}</label>`;
+      letra = proximaLetra(letra);
+    });
+
+    questaoHTML += `</div>`;
+    return questaoHTML;
+}
+
+function proximaLetra(letra) {
+return String.fromCharCode(letra.charCodeAt(0) + 1);
+};
